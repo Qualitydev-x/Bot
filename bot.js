@@ -1562,10 +1562,21 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const tier = interaction.customId.split("_")[1];
         
+        // ดึง key จริงของ user คนนี้
+        const keyResult = await serverGet(`/key/user/${interaction.user.id}`);
+        if (!keyResult.ok) return interaction.editReply({ content: "❌ คุณยังไม่ได้ Redeem Key กรุณา Redeem Key ก่อน" });
+        if (keyResult.expired) return interaction.editReply({ content: "❌ Key ของคุณหมดอายุแล้ว" });
+
+        // เช็ค tier hierarchy: ALLMAP >= ADMIN >= NORMAL
+        const tierOrder = { NORMAL: 1, ADMIN: 2, ALLMAP: 3 };
+        if (tierOrder[keyResult.tier] < tierOrder[tier]) {
+            return interaction.editReply({ content: `❌ Key ของคุณเป็น tier **${keyResult.tier}** ไม่สามารถเอา script **${tier}** ได้` });
+        }
+
         try {
             const res = await fetch(`${SERVER_URL}/script/${tier}`, { headers: { "x-bot-secret": BOT_SECRET } });
             const rawUrl = await res.text();
-            return interaction.editReply({ content: `\`\`\`\nkey=xxxxx\nloadstring(game:HttpGet("${rawUrl}"))()\n\`\`\`` });
+            return interaction.editReply({ content: `\`\`\`\nlicense_key=${keyResult.key}\nloadstring(game:HttpGet("${rawUrl}"))()\n\`\`\`` });
         } catch {
             return interaction.editReply({ content: "❌ ไม่มี Script" });
         }
@@ -1605,7 +1616,7 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const key = interaction.fields.getTextInputValue("key_input");
         
-        const result = await serverPost("/verify", { key, hwid: "pending", ip: "pending" });
+        const result = await serverPost("/verify", { key, hwid: `pending_${interaction.user.id}`, ip: "pending", discordUserId: interaction.user.id });
         return interaction.editReply({ content: result.ok ? `✅ Redeem สำเร็จ! Tier: ${result.tier}` : "❌ Key ไม่ถูกต้อง" });
     }
 
