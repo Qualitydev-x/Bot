@@ -1627,3 +1627,11 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.login(TOKEN);
+
+// ====== HTTP SERVER (required for Render port binding) ======
+const http = require("http");
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Bot is running");
+}).listen(PORT, () => console.log(`✅ HTTP server listening on port ${PORT}`));
