@@ -1,1354 +1,26 @@
 const {
-    Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder,
-    EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle,
-    ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags
+    MessageFlags, Client, GatewayIntentBits, REST, Routes,
+    SlashCommandBuilder, EmbedBuilder, ActionRowBuilder,
+    ButtonBuilder, ButtonStyle,
+    ModalBuilder, TextInputBuilder, TextInputStyle
 } = require('discord.js');
 const crypto = require('crypto');
 
-const TOKEN = process.env.BOT_TOKEN || "ใส่ TOKEN";
-const CLIENT_ID = process.env.CLIENT_ID || "ใส่ CLIENT_ID";
-const OWNER_ID = process.env.OWNER_ID || "1395634489404686379";
-const SERVER_URL = process.env.SERVER_URL || "https://server-production-d776.up.railway.app";
+const TOKEN = process.env.BOT_TOKEN || "PLACE_BOT_TOKEN_HERE";
+const CLIENT_ID = "1513724173644730511";
+const SERVER_URL = process.env.SERVER_URL || "https://rainx-server-v2-production.up.railway.app";
 const BOT_SECRET = process.env.BOT_SECRET || "rainx-bot-secret";
-const MOONVEIL_KEY = process.env.MOONVEIL_KEY || "mv-secret-2502adb8-d1ec-40fd-9d76-e2a424bbb253";
+const ENCRYPT_SECRET = process.env.ENCRYPT_SECRET || "pighub-encrypt-secret-xyz";
+const OWNER_SECRET = process.env.OWNER_SECRET || "owner-secret-123";
+const OWNER_ID = process.env.OWNER_ID || "1395634489404686379";
 const PASTEFY_KEY = process.env.PASTEFY_KEY || "ccZFKS97zNu94petuhZaq9uWUq6rtypxMejTX0NyZRTNYZ0tRdbnwCevXquE";
 
-const CLIENT_LOADER = `-- Obfuscation Type: Me (Luauth) - Custom VM/Encoding
-local deviceId = "?"
-local startTime = false
-do
-	local setupComplete = startTime
-	pcall(function()
-		setupComplete = true
-		local tutorialKey = "nil  nil  "
-		local charset = "qwertyuiopasdfghjklzxcvbnm098765"
-		local userGameSettings = UserSettings():GetService("UserGameSettings")
-		if not userGameSettings:GetTutorialState(tutorialKey) then
-			deviceId = ""
-			local seed = (wait())[1] * 1000000
-			local rng = (function(initial)
-				local a = 1103515245
-				local c = 12345
-				local m = 99999999
-				local state = initial % 2147483648
-				local idx = 1
-				return function(min, max)
-					local mVal = m
-					local newState = a * state + c
-					local randVal = newState % mVal + idx
-					idx = idx + 1
-					state = randVal
-					c = newState % 4858 * (mVal % 5782)
-					return min + randVal % max - min + 1
-				end
-			end)(seed - seed % 1)
-			userGameSettings:SetTutorialState(tutorialKey, true)
-			local bitIndex = 0
-			for _ = 1, 16 do
-				local bits = 0
-				local multiplier = 1
-				for _ = 1, 5 do
-					local bitValue = rng(10, 20) > 15
-					userGameSettings:SetTutorialState(tutorialKey .. bitIndex, bitValue)
-					bits = bits + (bitValue and 1 or 0) * multiplier
-					multiplier = multiplier * 2
-					bitIndex = bitIndex + 1
-				end
-				deviceId = deviceId .. charset:sub(bits + 1, bits + 1)
-			end
-		else
-			local bitIndex = 0
-			deviceId = ""
-			for _ = 1, 16 do
-				local bits = 0
-				local multiplier = 1
-				for _ = 1, 5 do
-					bits = bits + (userGameSettings:GetTutorialState(tutorialKey .. bitIndex) and 1 or 0) * multiplier
-					multiplier = multiplier * 2
-					bitIndex = bitIndex + 1
-				end
-				deviceId = deviceId .. charset:sub(bits + 1, bits + 1)
-			end
-		end
-	end)
-	while not setupComplete do
-	end
-end
-startTime = os.clock()
-if devsignature_sig then
-	print("        Pighub Loader - Lua whitelist service\\n        This is a signature - If you are seeing this, you know what not to do :3\\n        Have a good day!\\n        https://pighub.net/ - Lua wl service\\n    ")
-end
-local authFunction1
-local authFunction2
-local authFunction3
-local authValue3
-local authValue2
-local authValue1
-local authFlag1
-local authFlag2
-local authString1
-local authString2
-local cooldownTime
-local hugeNumber = math.huge
-local errorMessage = "Not specified"
-local decodeFunc
-local decodeTable
-local mathFloor = math.floor
-local mathRandom = math.random
-local tableRemove = table.remove
-local charFunc = string.char
-local seed1 = 0
-local seed2 = 2
-local byteToChar = {}
-local charToNibble = {}
-local shuffleTable = {}
-for i = 1, 256 do
-	shuffleTable[i] = i
-end
-repeat
-	local randIndex = tableRemove(shuffleTable, (mathRandom(1, # shuffleTable)))
-	charToNibble[randIndex] = charFunc(randIndex - 1)
-until # shuffleTable == 0
-local lcgState = {}
-do
-	local localMathFloor, localSeed1, localSeed2, localCharToNibble, localLcgState = mathFloor, seed1, seed2, charToNibble, lcgState
-	local function generateBytes()
-		if # localLcgState == 0 then
-			localSeed1 = (localSeed1 * 169 + 7579774851987) % 35184372088832
-			repeat
-				localSeed2 = localSeed2 * 27 % 257
-			until localSeed2 ~= 1
-			local shift = localSeed2 % 32
-			local temp = localMathFloor(localSeed1 / 2 ^ (13 - (localSeed2 - shift) / 32)) % 4294967296 / 2 ^ shift
-			local high = localMathFloor(temp % 1 * 4294967296) + localMathFloor(temp)
-			local low = high % 65536
-			local mid = (high - low) / 65536
-			local b1 = low % 256
-			local b2 = (low - b1) / 256
-			local b3 = mid % 256
-			local b4 = (mid - b3) / 256
-			localLcgState = {
-				b1,
-				b2,
-				b3,
-				b4
-			}
-		end
-		return table.remove(localLcgState)
-	end
-	local decodeCache = {}
-	decodeTable = decodeCache
-	decodeFunc = function(data, key)
-		local cache = decodeCache
-		if not cache[key] then
-			lcgState = {}
-			local charTable = localCharToNibble
-			localSeed1 = key % 35184372088832
-			localSeed2 = key % 255 + 2
-			local len = # data
-			cache[key] = ""
-			local accumulator = 180
-			for i = 1, len do
-				accumulator = (string.byte(data, i) + generateBytes() + accumulator) % 256
-				cache[key] = cache[key] .. charTable[accumulator + 1]
-			end
-		end
-		return key
-	end
-end
-mathFloor = PIGHUB_SkipAntidebugDevMode
-mathRandom = PIGHUB_AllowKeyCheckSkip
-tableRemove = ff97f23b97f93792992999 and ff97f23b97f93792992999() == "j" or false
-charFunc = "eu1-roblox-auth.pighub.net"
-seed1 = l_fastload_enabled
-seed2 = os.time(os.date("*t")) - os.time(os.date("!*t"))
-if seed2 < 0 then
-	seed2 = (86400 + - (- seed2 % 86400)) % 86400
-else
-	seed2 = seed2 % 86400
-end
-local hour = seed2 / 3600
-if hour >= 21 or hour < 5 then
-	charFunc = ({
-		"eu1-roblox-auth.pighub.net",
-		"eu2-roblox-auth.pighub.net"
-	})[math.random(1, 2)]
-elseif hour >= 5 and hour < 15 then
-	charFunc = ({
-		"as1-roblox-auth.pighub.net",
-		"as2-roblox-auth.pighub.net",
-		"as3-roblox-auth.pighub.net",
-		"au1-roblox-auth.pighub.net",
-		"au2-roblox-auth.pighub.net"
-	})[math.random(1, 5)]
-elseif hour >= 15 and hour < 21 then
-	charFunc = ({
-		"us1-roblox-auth.pighub.net",
-		"us2-roblox-auth.pighub.net"
-	})[math.random(1, 2)]
-else
-	game:GetService("Players").LocalPlayer:Kick("invalid timezone - send this screenshot to developer and Federal")
-end
-pcall(function()
-	if game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(game:GetService("Players").LocalPlayer) == "AU" then
-		charFunc = ({
-			"au1-roblox-auth.pighub.net",
-			"au2-roblox-auth.pighub.net"
-		})[math.random(1, 2)]
-	end
-end)
-local config = {
-	Version = "3.4",
-	Host = tableRemove and LT_R_RRT_H or "https://" .. charFunc,
-	ScriptID = "2674ffd1c9054918b647386bab0ae9fc",
-	ScriptVersion = "0001",
-	Name = "TEST"
+const LICENSE_EXEMPT_COMMANDS = new Set(["addlicense", "renewlicense", "deletelicense", "licenseinfo"]);
+
+async function serverGet(path) {
+    const res = await fetch(`${SERVER_URL}${path}`, { headers: { "x-bot-secret": BOT_SECRET } });
+    return res.json();
 }
-local isNotTable = type(({
-	...
-})[1]) ~= "table"
-local wsInstance = false
-local heartbeatFailedFlag = false
-local customHashResult = nil
-local shuffleResult = nil
-local lcgResult = nil
-local authState
-local scriptVersionPath
-local scriptKey = script_key or "none"
-local frameCount = 0
-local wsClosing = false
-local debugOutput = false
-local errorCode = 68
-local printFunc = print
-local nextFunc = next
-local charFunc2 = string.char
-local executorIdentified = true
-local identifyExecutor = identifyexecutor
-local gameService = game
-local pcallFunc = pcall
-local httpGetEnabled = true
-local gmatchFunc = string.gmatch
-local tracebackFunc = debug.traceback
-local tonumberFunc = tonumber
-local setmetatableFunc = setmetatable
-local rawgetFunc = rawget
-local waitFunc = wait
-local getInfoFunc = debug.getinfo
-local loadstringFunc = loadstring
-local timeFunc = os.time
-local byteFunc = string.byte
-local subFunc = string.sub
-local spawnFunc = spawn
-local heartbeat = game:GetService("RunService").Heartbeat
-local clockFunc = os.clock
-local rconsolePrint = rconsoleprint
-local hugeNum = math.huge
-local tostringFunc = tostring
-local pairsFunc = pairs
-local findFunc = string.find
-local function showErrorAndKick(title, message)
-	loadstringFunc("local t,r = ...\\nspawn(function() while wait() do pcall(function() game:GetService(\\"CoreGui\\").RobloxPromptGui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = t\\ngame:GetService(\\"CoreGui\\").RobloxPromptGui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = r end) end end)\\ngame:GetService('Players').LocalPlayer:Kick(r)\\n        ")(title, message)
-	while waitFunc() do
-	end
-end
-local WebSocketHandler = {}
-local wsReady = false
-local formatFunc = string.format
-local subFunc2 = string.sub
-local concatFunc = table.concat
-local typeFunc = type
-local pairsFunc2 = pairsFunc
-local waitFunc2 = waitFunc
-local coroutineWrap = coroutine.wrap
-local wsConnect = syn and syn.websocket and syn.websocket.connect or WebSocket and WebSocket.connect or WebsocketClient and function(url)
-	local client = WebsocketClient.new(url)
-	client:Connect()
-	return client
-end
-do
-	local localFormat, localSub, localConcat, localType, localPairs, localWait, localWrap, localConnect = formatFunc, subFunc2, concatFunc, typeFunc, pairsFunc2, waitFunc2, coroutineWrap, wsConnect
-	local function serializeTable(tbl)
-		local parts = {}
-		for k, v in localPairs(tbl) do
-			parts[# parts + 1] = localFormat("\\"%s\\":%s,", k, localType(v) == "table" and serializeTable(v) or "\\"" .. v .. "\\"")
-		end
-		return "{" .. localSub(localConcat(parts), 0, - 2) .. "}"
-	end
-	local function startHeartbeat(ws)
-		local function onMessage(msg)
-			if msg == "PONG" then
-				if debugOutput then
-					rconsolePrint("[" .. clockFunc() .. "] [PONG] Server ---> Client \\n")
-				end
-				ws.LastPong = tick()
-				return
-			else
-				local idMatch = string.match(msg, "|__(%d+)__|")
-				if debugOutput then
-					rconsolePrint("[" .. clockFunc() .. "] [RESPONSE] Server ---> Client: " .. msg .. "\\n")
-				end
-				if idMatch then
-					local reqId = idMatch + 0
-					local event = ws.Requests[reqId]
-					assert(event, "Internal Error: no event receiver")
-					event:Fire(msg:gsub("|__(%d+)__|", ""))
-					return event:Destroy()
-				else
-					return ws.OnMessageSignal:Fire(msg)
-				end
-			end
-		end
-		local function onClose()
-			if debugOutput then
-				rconsolePrint("[" .. clockFunc() .. "] [CLOSED] ")
-			end
-			ws.__OBJECT_ACTIVE = false
-			if ws.SocketClosed or wsClosing then
-				if debugOutput then
-					rconsolePrint(" (ALREADY CLOSED)\\n")
-				end
-				return
-			else
-				local attempts = 0
-				local newWs
-				while true do
-					if debugOutput then
-						rconsolePrint("[" .. clockFunc() .. "] Attempting to reconnect to wshttpemu\\n")
-					end
-					local startReconnect = timeFunc()
-					local finished = false
-					local success
-					spawnFunc(function()
-						local ok, result = pcallFunc(localConnect, ws.Url)
-						newWs = result
-						success = ok
-						finished = true
-					end)
-					while not finished and timeFunc() < startReconnect + 8 do
-						localWait()
-					end
-					if debugOutput then
-						rconsolePrint("[" .. clockFunc() .. "] ######## L_PASS: d: " .. tostringFunc(finished) .. ", ok: " .. tostringFunc(success) .. "\\n")
-					end
-					if not finished then
-						wsInstance = false
-						attempts = 10
-						warn("[2] Unable to connect (timeout)")
-					end
-					if not success then
-						attempts = attempts + 1
-						if attempts > 5 then
-							wsInstance = false
-						end
-						localWait(attempts < 4 and 10 or 120)
-					else
-						break
-					end
-				end
-				attempts = 0
-				if debugOutput then
-					rconsolePrint("[" .. clockFunc() .. "] [CONNECT] Reconnected\\n")
-				end
-				ws.__OBJECT_ACTIVE = true
-				ws.Websocket = newWs
-				wsInstance = ws
-				newWs:Send(serializeTable({
-					Opcode = "PING",
-					Data = {}
-				}))
-				pcallFunc(function()
-					newWs.OnClose:Connect(onClose)
-					newWs.OnMessage:Connect(onMessage)
-				end)
-				pcallFunc(function()
-					newWs.ConnectionClosed:Connect(onClose)
-					newWs.DataReceived:Connect(onMessage)
-				end)
-				return
-			end
-		end
-		pcallFunc(function()
-			ws.Websocket.OnClose:Connect(onClose)
-			ws.Websocket.OnMessage:Connect(onMessage)
-		end)
-		pcallFunc(function()
-			ws.Websocket.DataReceived:Connect(onMessage)
-			ws.Websocket.ConnectionClosed:Connect(onClose)
-		end)
-		ws.LastPong = tick()
-		while localWait(10) do
-			if debugOutput then
-				rconsolePrint("[" .. clockFunc() .. "] [PING] Client ---> Server\\n")
-			end
-			if ws.__OBJECT_ACTIVE then
-				ws.Websocket:Send(serializeTable({
-					Opcode = "PING",
-					Data = {}
-				}))
-				if tick() - ws.LastPong > 20 then
-					if debugOutput then
-						rconsolePrint("[" .. clockFunc() .. "] [WARN] Server timeout\\n")
-					end
-					warn("Server timeout")
-					ws.Websocket:Close()
-				end
-			end
-		end
-	end
-	WebSocketHandler.new = function(self, url)
-		local obj = {}
-		setmetatableFunc(obj, self)
-		self.__index = self
-		local startTime = timeFunc()
-		local connected = false
-		local wsObj
-		local err
-		spawnFunc(function()
-			local ok, result = pcallFunc(localConnect, url)
-			wsObj = result
-			connected = ok
-			err = result
-		end)
-		while not connected and timeFunc() < startTime + 8 do
-			localWait()
-		end
-		if not connected then
-			wsInstance = false
-			error("Unable to connect to WS")
-		end
-		assert(connected, err)
-		self.Websocket = wsObj
-		self.Url = url
-		self.OnMessageSignal = Instance.new("BindableEvent")
-		self.OnMessage = self.OnMessageSignal.Event
-		self.Requests = {}
-		self.__OBJECT_ACTIVE = true
-		localWrap(startHeartbeat)(self)
-		repeat
-			heartbeat:Wait()
-		until self.LastPong
-		return obj
-	end
-	WebSocketHandler.request = function(self, data)
-		if debugOutput then
-			rconsolePrint("[" .. clockFunc() .. "] [REQUEST] Client ---> Server, ObjectActive: " .. tostringFunc(self.__OBJECT_ACTIVE) .. "\\n")
-		end
-		local attempts = 0
-		while true do
-			if true then
-				attempts = attempts + 1
-				localWait(0.1)
-				if attempts > 40 then
-					warn("[3] r_timeout")
-					wsInstance = false
-					return ""
-				end
-			else
-				if debugOutput then
-					rconsolePrint("[" .. clockFunc() .. "] [REQUEST] [!!!] OBJECT ACTIVE PASSED\\n")
-				end
-				local reqId = math.random(1, 99999999)
-				local event = Instance.new("BindableEvent")
-				if debugOutput then
-					rconsolePrint("[" .. clockFunc() .. "] Event assigned\\n")
-				end
-				self.Requests[reqId] = event
-				self.Websocket:Send(serializeTable({
-					Opcode = "REQUEST",
-					Data = data,
-					Id = reqId
-				}))
-				if debugOutput then
-					rconsolePrint("[" .. clockFunc() .. "] Packet sent!\\n")
-				end
-				local responded = false
-				spawnFunc(function()
-					localWait(30)
-					if not responded then
-						if debugOutput then
-							rconsolePrint("[" .. clockFunc() .. "] !!!!!! ALERT !!!!!!!!! REQ TIMEOUT !!!!!!!!\\n")
-						end
-						local ev = self.Requests[reqId]
-						assert(ev, "Internal Error: no event receiver")
-						ev:Fire("")
-						if debugOutput then
-							rconsolePrint("[" .. clockFunc() .. "] Responded with something empty\\n")
-						end
-						return ev:Destroy()
-					else
-						return
-					end
-				end)
-				local result = event.Event:Wait()
-				responded = true
-				return result
-			end
-		end
-	end
-	WebSocketHandler.close = function(self)
-		self.SocketClosed = true
-		self.Websocket:Close()
-	end
-end
-local scriptKeyValue = script_key or "none"
-local heartbeatCounter = 0
-local heartbeatActive = false
-do
-	local localHeartbeatActive = heartbeatActive
-	spawnFunc(function()
-		localHeartbeatActive = true
-		while not wsReady do
-			heartbeatCounter = heartbeatCounter + 1
-			heartbeat:Wait()
-		end
-	end)
-	while not localHeartbeatActive do
-		heartbeat:Wait()
-	end
-	local function waitForHeartbeatChange()
-		local current = heartbeatCounter
-		while heartbeatCounter == current do
-			heartbeat:Wait()
-		end
-	end
-	waitForHeartbeatChange = waitForHeartbeatChange
-end
-local function crashScript(enableCrash)
-	if enableCrash then
-		for _ = 1, 99999999 do
-			for _ = 1, 99999999 do
-				LPH_CRASH()
-			end
-		end
-	end
-	while waitFunc() do
-	end
-end
-local executorType = 1
-local httpRequest = syn and syn.request or request or http_request
-if identifyExecutor and ({
-	identifyExecutor()
-})[1] == "Synapse X" and not gethui and syn then
-	executorType = 1
-elseif identifyExecutor and ({
-	identifyExecutor()
-})[1] == "ScriptWare" then
-	executorType = ({
-		identifyExecutor()
-	})[2] == "Mac" and 5 or 2
-elseif FLUXUS_LOADED or EVON_LOADED or WRD_LOADED or COMET_LOADED or OZONE_LOADED or TRIGON_LOADED then
-	executorType = 4
-elseif KRNL_LOADED then
-	executorType = 3
-elseif Electron_Loaded then
-	executorType = 6
-elseif identifyExecutor and ({
-	identifyExecutor()
-})[1] == "Sirhurt" then
-	executorType = 7
-end
-;
-(function(maxVal, alphabet)
-	local encodeMap = {}
-	local decodeMap = {}
-	for i = 0, 255 do
-		local ch = charFunc2(i)
-		decodeMap[i] = ch
-		decodeMap[ch] = i
-	end
-	local alph = alphabet
-	for idx = 1, # alph do
-		local ch = alph[idx]
-		encodeMap[idx - 1] = ch
-		encodeMap[ch] = idx - 1
-	end
-end)(255, {
-	"a",
-	"b",
-	"Q",
-	"k",
-	"O",
-	"I",
-	"1",
-	"l",
-	"0",
-	"9",
-	"E",
-	"3",
-	"J",
-	"7",
-	"G",
-	"T"
-})
-local function mathFloorFunc(x)
-	return x - x % 1
-end
-local function lcgFactory(seed)
-	local a = 1103515245
-	local c = 12345
-	local m = 99999999
-	local state = seed % 2147483648
-	local idx = 1
-	return function(min, max)
-		local mVal = m
-		local newState = a * state + c
-		local randVal = newState % mVal + idx
-		idx = idx + 1
-		state = randVal
-		c = newState % 4859 * (mVal % 5781)
-		return min + randVal % max - min + 1
-	end
-end
-local function customHash(value)
-	for _ = 1, 2 do
-		local v1 = value % 9915 + 4
-		local v2
-		local v3
-		for i = 1, 3 do
-			v2 = value % 4155 + 3
-			if i % 2 == 1 then
-				v2 = v2 + 522
-			end
-			v3 = value % 9996 + 1
-			if v3 % 2 ~= 1 then
-				v3 = v3 * 3
-			end
-		end
-		local v4 = value % 9999995 + 1 + 13729
-		local v5 = value % 1000
-		local v6 = mathFloorFunc((value - v5) / 1000) % 1000
-		local v7 = v5 * v6 + v4 + value % (419824125 - v4 + v5)
-		local v8 = value % (v1 * v2 + 9999) + 13729
-		value = (v7 + (v8 + (v5 * v2 + v6)) % 999999 * (v4 + v8 % v3)) % 99999999999
-	end
-	return value
-end
-local function logMessage(msg)
-	printFunc("[" .. config.Name .. "]: " .. msg)
-end
-local function validateState(stateTable)
-	local map1 = {}
-	local map2 = {}
-	local map3 = {}
-	for i = 1, 13 do
-		local key = {}
-		local val = {}
-		map1[key] = val
-		map2[val] = i
-		map3[key] = val
-	end
-	local sum1 = 0
-	local sum2 = 0
-	local count = 0
-	if stateTable then
-		map1 = stateTable[1]
-		map2 = stateTable[2]
-		map3 = stateTable[3]
-	end
-	for k, v in nextFunc, map1 do
-		local mapped = map2[v]
-		if map3[k] == v then
-			sum1 = sum1 + 1
-		end
-		count = count + 1
-		sum2 = count % 2 == 0 and sum2 * mapped or sum2 + mapped + count
-	end
-	if sum1 ~= 13 then
-		authState = - 1
-	end
-	local authTableStore = {
-		map1,
-		map2,
-		map3
-	}
-	authState = sum2
-	return false
-end
-errorCode = 68
-logMessage("[1/3] Loading Pighub Loader...")
-local lcg1 = nil
-authState = - 1
-validateState()
-while authState == - 1 do
-end
-lcg1 = lcgFactory(heartbeatCounter + authState)
-if executorType == 1 or executorType == 2 then
-	local counter1 = 0
-	local counter2 = 0
-	pcallFunc(function()
-		(function(tbl)
-			tostringFunc(tbl[1])
-		end)(setmetatableFunc({}, {
-			__index = function(_, _)
-				local recursive
-				recursive = function()
-					counter1 = counter1 + 1
-					return recursive()
-				end
-				recursive()
-			end
-		}))
-	end)
-	pcallFunc(function()
-		httpRequest(setmetatableFunc({}, {
-			__index = function(_, _)
-				local recursive
-				recursive = function()
-					counter2 = counter2 + 1
-					return recursive()
-				end
-				recursive()
-			end
-		}))
-	end)
-	if counter2 + counter1 < 20000 then
-		if true then
-			errorCode = 19
-		end
-	elseif counter2 - counter1 ~= 0 and true then
-		errorCode = 18
-	end
-end
-local function httpGet(url, useAntiDebug, arg)
-	local options = {
-		Method = "GET"
-	}
-	if useAntiDebug then
-		options = setmetatableFunc(options, {
-			__index = function(_, key)
-				if key == "Url" then
-					local matches = gmatchFunc(tracebackFunc(), "[^:]*:(%d+)")
-					local line1 = matches()
-					local line2 = matches()
-					local diff = 1
-					pcallFunc(function()
-						diff = tonumberFunc(line2) - tonumberFunc(line1)
-					end)
-					if executorType == 1 and syn and (diff ~= 0 or line1 ~= line2) then
-						errorCode = 37
-						while arg do
-						end
-					end
-					return url
-				else
-					return rawgetFunc(options, key)
-				end
-			end
-		})
-	else
-		options.Url = url
-	end
-	local response = httpRequest(options)
-	return response.Body
-end
-waitForHeartbeatChange()
-local function antiDebugCheck(shouldCrash)
-	local triggered = false
-	local funcs = {
-		getInfoFunc,
-		setmetatableFunc,
-		tostringFunc,
-		[- 1] = executorType == 3 and function()
-		end or httpRequest,
-		charFunc2,
-		subFunc,
-		byteFunc,
-		timeFunc,
-		loadstringFunc,
-		pcallFunc
-	}
-	local function tostringOverride()
-		triggered = true
-		return (" "):rep(16777215)
-	end
-	local dummyTable = setmetatableFunc({}, {
-		__tostring = function()
-			triggered = true
-			return (" "):rep(16777215)
-		end
-	})
-	for idx, func in nextFunc, funcs do
-		if idx ~= - 1 and false then
-			triggered = true
-		end
-		if func ~= printFunc and func ~= tostringFunc then
-			local oldPrint = printFunc
-			local oldToString = tostringFunc
-			local oldError = error
-			local env = getfenv()
-			env.tostring = tostringOverride
-			env.error = tostringOverride
-			env.print = tostringOverride
-			if idx == - 1 then
-				if executorType ~= 5 then
-					pcallFunc(func, "")
-				end
-			else
-				pcallFunc(func, dummyTable)
-			end
-			env.tostring = oldToString
-			env.print = oldPrint
-			env.error = oldError
-		end
-	end
-	if triggered then
-		errorCode = 85
-		if shouldCrash then
-			crashScript(true)
-		end
-	end
-end
-local tempNum = heartbeatCounter
-local httpStatus = nil
-local statusOk, statusBody = pcallFunc(function()
-	httpStatus = httpGet(config.Host .. "/status", false)
-	local decoded = gameService:GetService("HttpService"):JSONDecode(httpStatus)
-	if true then
-		warn(decoded.message)
-		crashScript()
-	end
-	if not decoded.versions[config.Version] then
-		warn("This script is outdated! Try using the latest version.")
-		crashScript()
-	end
-	config.Host = tableRemove and LT_R_RRT_H or "https://" .. charFunc
-	scriptVersionPath = decoded.versions[config.Version]
-end)
-waitForHeartbeatChange()
-if not statusOk then
-	logMessage("Failed to load Pighub Loader. (Server responds with something unparsable)")
-	error("Failed to load Pighub Loader. (Server responds with something unparsable) --> " .. tostringFunc(httpStatus))
-	return
-else
-	wsReady = false
-	spawnFunc(function()
-		if not pcallFunc(function()
-			wsInstance = WebSocketHandler:new(tableRemove and LT_R_RRT_W or "wss://" .. charFunc .. ":443/wshttpemu")
-		end) then
-			logMessage("[INFO] Failed to connect to websocket, falling back to HTTP.")
-			wsInstance = false
-		end
-		wsReady = true
-	end)
-	tempNum = heartbeatCounter % 8585 * (tempNum % 9910)
-	antiDebugCheck()
-	if isNotTable then
-		errorCode = 146
-	end
-	logMessage("[2/3] Connecting to server..")
-	local lcg2 = lcgFactory(tempNum + lcg1(2, 4096))
-	local randomValues = {
-		[1] = lcg2(100000, 1000000),
-		[2] = lcg1(1111, 32768),
-		[3] = lcg1(3333, 15625) + heartbeatCounter,
-		[4] = lcg2(10000, 1000000)
-	}
-	local forceErrorFlag = false
-	authState = - 1
-	validateState()
-	if authState == - 1 then
-		forceErrorFlag = true
-		authState = 100
-	end
-	local randA = 0
-	local randB = 0
-	local randC = 0
-	local randD = 1
-	local randTable = {
-		[0] = 0
-	}
-	do
-		local localRandA, localRandB, localRandC, localRandD, localRandTable = randA, randB, randC, randD, randTable
-		local function encodeNibble(value, isForDecode, skip)
-			local result = isForDecode and value or byteToChar[value]
-			if not skip then
-				result = (result + 4096 - localRandTable[localRandA]) % 256
-				localRandC = localRandC + result
-				localRandA = (localRandA + 1) % localRandD
-			end
-			local low = result % 16
-			return charToNibble[(result - low) / 16] .. charToNibble[low]
-		end
-		local function byteSum(str)
-			local sum = 0
-			for i = 1, # str do
-				sum = sum + byteFunc(str, i)
-			end
-			return sum
-		end
-		local function decodePair(str, isRaw)
-			local high = charToNibble[subFunc(str, 1, 1)]
-			local low = charToNibble[subFunc(str, 2, 2)]
-			local val = (high * 16 + low + localRandTable[localRandB]) % 256
-			localRandB = (localRandB + 1) % localRandD
-			if isRaw then
-				return val
-			else
-				return byteToChar[val]
-			end
-		end
-		local function decodeString(encoded)
-			local result = {}
-			localRandB = 0
-			local pos = 1
-			repeat
-				local count = decodePair(subFunc(encoded, pos, pos + 1), true)
-				pos = pos + 2
-				local str = ""
-				for _ = 1, count do
-					str = str .. decodePair(subFunc(encoded, pos, pos + 1))
-					pos = pos + 2
-				end
-				result[# result + 1] = str
-			until # encoded < pos
-			return result
-		end
-		local function encodeString(str, skipState)
-			local encoded = encodeNibble(# str, true, skipState)
-			for i = 1, # str do
-				encoded = encoded .. encodeNibble(subFunc(str, i, i), false, skipState)
-			end
-			return encoded
-		end
-		local function stateManager(cmd, data1, data2)
-			if cmd == 1 then
-				localRandTable = data1
-				localRandD = data2
-			elseif cmd == 2 then
-				localRandA = 0
-				localRandC = 0
-			elseif cmd == 3 then
-				return localRandC
-			end
-		end
-		stateManager = stateManager
-		decodeString = decodeString
-		encodeString = encodeString
-		byteSum = byteSum
-	end
-	lcg1 = lcgFactory(lcg1(2, 32768 + timeFunc() % 2000) + authState % 4096)
-	lcg2 = lcgFactory(lcg2(1, 32768) + heartbeatCounter + timeFunc() % 1000)
-	randA = lcg1(111111, 999999)
-	local funcTable = {}
-	for i = 1, randA % 30 + 1 do
-		local func
-		if i == 2 then
-			func = tostringFunc
-		elseif i == 8 then
-			func = printFunc
-		elseif i == 17 then
-			func = subFunc
-		else
-			func = function()
-			end
-		end
-		funcTable[i] = func
-	end
-	randB = lcg2(111111, 999999) + 181
-	randC = lcg1(1, 1234) * lcg2(2, 1235) + authState % 80000
-	randTable = {
-		[1] = lcg1(100000, 1000000),
-		[2] = lcg2(100000, 1000000),
-		[3] = lcg1(100000, 1000000)
-	}
-	if mathFloor or mathRandom then
-		errorCode = 218
-	end
-	if forceErrorFlag then
-		errorCode = 250
-	end
-	local encodedData = ((((((encodeString("" .. randB) .. encodeString("" .. customHash(8410 + randA) .. customHash(errorCode + randC) .. customHash(randB - 181))) .. encodeString(randC .. "") .. encodeString("" .. randA)) .. encodeString(randomValues[3] + 19053 .. "")) .. encodeString("" .. randTable[1]) .. encodeString("" .. 15411 + randomValues[4])) .. encodeString(randTable[3] .. "") .. encodeString("" .. randomValues[2] + 181)) .. encodeString(randTable[2] .. "") .. encodeString("" .. 8410 + randomValues[1])) .. encodeString(deviceId and deviceId or "?")
-	encodedData = encodeString(customHash(stateManager(3) + 12268) .. "", true) .. encodedData
-	local dummyKey = {}
-	local dummyValue = lcg2(111111, 999999)
-	local oldAuthState = authState
-	getfenv()[dummyKey] = dummyValue
-	local authResponse = httpGet(config.Host .. "/" .. scriptVersionPath .. "/auth/" .. config.ScriptID .. "/init?t=" .. encodedData .. "&v=" .. config.ScriptVersion .. "&k=" .. scriptKeyValue, false)
-	authState = - 1
-	validateState(authTableStore)
-	while authState == - 1 do
-	end
-	local authFailedFlag = false
-	local tempCount = 0
-	for idx, func in pairsFunc(funcTable) do
-		tempCount = idx
-		if idx == 2 and func ~= tostringFunc then
-			errorCode = 147
-		end
-		if idx == 8 and func ~= printFunc then
-			errorCode = 147
-		end
-		if idx == 17 and func ~= subFunc then
-			errorCode = 147
-		end
-	end
-	if tempCount ~= randA % 30 + 1 then
-		errorCode = 147
-	end
-	if errorCode == 147 then
-		authFailedFlag = true
-	end
-	if authState ~= oldAuthState then
-		authFailedFlag = true
-		errorCode = 100
-	end
-	if authResponse == "err" then
-		while true do
-		end
-	end
-	if findFunc(authResponse, "Old script, please use the latest version") and seed1 then
-		seed1("flush")
-		return
-	else
-		if subFunc(authResponse, 1, 1) == "!" then
-			local errMsg = authResponse
-			local title = "Whitelist Error"
-			if string.find(errMsg, ";;lrm_is_diff_msg") then
-				title = "You are blacklisted"
-				errMsg = subFunc(authResponse, 2, # authResponse - 17)
-			else
-				errMsg = subFunc(authResponse, 2, # authResponse)
-			end
-			showErrorAndKick(title, errMsg)
-			crashScript()
-		end
-		randomValues = {
-			[0] = randomValues[1] % 256,
-			[1] = randomValues[2] % 256,
-			[2] = randomValues[3] % 256,
-			[3] = randomValues[4] % 256
-		}
-		waitForHeartbeatChange()
-		if getfenv()[dummyKey] ~= dummyValue then
-			authFailedFlag = true
-			errorCode = 100
-		end
-		local checkSum = 0
-		local checkVal = 1
-		for _ = 1, 30 do
-			if tostringFunc({}) > tostringFunc({}) then
-				checkVal = checkVal + 1
-			else
-				checkVal = checkVal * 2
-			end
-			checkVal = checkVal % 10000
-		end
-		checkSum = checkVal
-		stateManager(1, randomValues, 4)
-		local decodedAuth = decodeString(authResponse)
-		authValue1 = decodedAuth[1] - randB
-		authValue2 = decodedAuth[4] - randA
-		antiDebugCheck()
-		stateManager(1, {
-			[0] = randomValues[0],
-			[2] = randomValues[1],
-			[4] = randomValues[2],
-			[6] = randomValues[3],
-			[1] = decodedAuth[9],
-			[3] = decodedAuth[7],
-			[5] = decodedAuth[2],
-			[7] = decodedAuth[6]
-		}, 8)
-		local tempVal1 = decodedAuth[8] - randTable[1]
-		local tempVal2 = decodedAuth[3] - randTable[2]
-		authValue3 = decodedAuth[5] - randTable[3]
-		authFunction2 = tempVal2
-		authFunction1 = tempVal1
-		local expected = "" .. customHash(randTable[3] + 8474) .. customHash(randTable[1] + 31) .. customHash(randTable[2] + 4491)
-		if decodedAuth[11] == expected and ({
-			[expected] = true
-		})[decodedAuth[11]] then
-			authFlag1 = true
-			local flag = true
-		else
-			expected = "" .. customHash(randTable[3] + 8474) .. customHash(randTable[1] + 69) .. customHash(randTable[2] + 4491)
-			if decodedAuth[11] == expected and ({
-				[expected] = true
-			})[decodedAuth[11]] then
-				authFlag1 = true
-			end
-		end
-		if authFlag1 then
-			if tonumberFunc(decodedAuth[14] and decodedAuth[14] or "-1") == - 1 then
-				hugeNumber = hugeNum
-			end
-			cooldownTime = tonumberFunc(decodedAuth[15] and decodedAuth[15] or "0")
-			errorMessage = decodedAuth[16]
-		end
-		authState = - 1
-		validateState()
-		if authState == - 1 then
-			errorCode = 250
-			authState = 100
-		end
-		local newRand1 = lcg1(111111, 999999) + heartbeatCounter + lcg2(1234, 5678) + authState % 99915 + checkSum
-		randTable[4] = lcg1(100000, 1000000 + authState % 1000) + heartbeatCounter + authState % 9951
-		randTable[5] = lcg2(100000, 1000000 + authState % 5000) + authState % 8005 + checkSum
-		randTable[6] = lcg1(100000, 1000000)
-		stateManager(2)
-		local tempVal3 = decodedAuth[10]
-		encodedData = encodeString("" .. customHash(decodedAuth[13] + 2848) .. customHash(newRand1 + errorCode) .. customHash(decodedAuth[10] + randA)) .. encodeString(randTable[5] .. "") .. encodeString("" .. newRand1) .. encodeString("" .. randTable[6]) .. encodeString(randTable[4] .. "")
-		encodedData = encodeString(customHash(stateManager(3) + 12268) .. "", true) .. encodedData
-		local secondResponse = gameService:HttpGet(config.Host .. "/" .. scriptVersionPath .. "/auth/start/" .. decodedAuth[12] .. "?t=" .. encodedData)
-		if secondResponse == "err" then
-			while true do
-			end
-		end
-		if subFunc(secondResponse, 1, 1) == "!" then
-			gameService:GetService("Players").LocalPlayer:Kick(secondResponse)
-			crashScript()
-		end
-		local decodedSecond = decodeString(secondResponse)
-		local counterVar = 1
-		local lcg3 = lcgFactory(1 + lcg1(100, 1000 + checkSum) + lcg2(500, 5000 + checkSum) + heartbeatCounter % 10000)
-		local authSuccessFlag = false
-		local retryFlag = false
-		local heartbeatFailed = false
-		local lastHeartbeatTime = 0
-		do
-			do
-				local localConfig, localWs, localHash, localCrash, localEncode, localDecode, localStateManager, localVersionPath, localGame, localPcall, localHttpGet, localWait, localClock, localRconsole, localTostring, localDebug, localWsClosingFlag, localStateC, localNewRand1, localTempVal3, localCounterVar, localLcg3, localHeartbeatFailed, localLastHeartbeatTime = config, wsInstance, customHash, crashScript, encodeString, decodeString, stateManager, scriptVersionPath, gameService, pcallFunc, httpGet, waitFunc, clockFunc, rconsolePrint, tostringFunc, debugOutput, wsClosing, randC, newRand1, tempVal3, counterVar, lcg3, heartbeatFailed, lastHeartbeatTime
-				for retry = 1, 3 do
-					local expectedChk = decodedSecond[3]
-					local computed = localHash(randTable[5] + 181) .. localHash(randTable[4] + byteSum(retryFlag and "?" or localGame.JobId)) .. localHash(randTable[6] + randTable[2])
-					if expectedChk == computed and ({
-						[computed] = true
-					})[expectedChk] then
-						authSuccessFlag = true
-						authFlag2 = true
-						authString1 = decodedSecond[8] and decodedSecond[8] ~= "?" and decodedSecond[8] or "Unknown"
-						authString2 = decodedSecond[9] and decodedSecond[9] or "Unknown"
-						local val6 = decodedSecond[6]
-						local val2 = decodedSecond[2]
-						authValue3 = decodedSecond[4]
-						authValue2 = val2
-						authValue1 = val6
-						local decoded1 = decodedSecond[1] - randTable[4]
-						local decoded2 = decodedSecond[7] - randTable[5]
-						local decoded3 = decodedSecond[5] - randTable[6]
-						local oldFunc1 = authFunction1
-						local oldFunc2 = authFunction2
-						local oldFunc3 = authValue3
-						do
-							local localDecoded1, localDecoded2, localDecoded3, localOldFunc1, localOldFunc2, localOldFunc3 = decoded1, decoded2, decoded3, oldFunc1, oldFunc2, oldFunc3
-							authFunction1 = function(x)
-								if localHeartbeatFailed or localLastHeartbeatTime < localClock() - 8 then
-									while true do
-									end
-								end
-								localCounterVar = (localCounterVar + x % 66) % 6644
-								return localOldFunc1 * x % localDecoded1 + x * 3
-							end
-							authFunction2 = function(x)
-								if localHeartbeatFailed or localLastHeartbeatTime < localClock() - 8 then
-									while true do
-									end
-								end
-								localCounterVar = (localCounterVar + x % 50) % 5891
-								return localOldFunc2 * x % 10000 + x * (localDecoded2 % 4)
-							end
-							authFunction3 = function(x)
-								if localHeartbeatFailed or localLastHeartbeatTime < localClock() - 8 then
-									while true do
-									end
-								end
-								localCounterVar = (localCounterVar + x % 35) % 6711
-								return (x + localDecoded3) % 100 * (x % (localOldFunc3 % 100 + 1))
-							end
-						end
-						break
-					elseif retry ~= 3 then
-						retryFlag = true
-					end
-				end
-				if not authSuccessFlag then
-					while true do
-					end
-				end
-				if authFailedFlag then
-					while true do
-					end
-				end
-				while not wsReady do
-					heartbeat:Wait()
-				end
-				wsReady = true
-				local heartbeatOk = false
-				local heartbeatThreadStarted = false
-				local missedHeartbeats = 0
-				local heartbeatCount = 0
-				local stabilityCounter = 0
-				local lastHeartbeatOk = false
-				local lastPingTime = 0
-				local lastPongTime = 0
-				local scriptId = decodedAuth[12]
-				do
-					local localMissed = missedHeartbeats
-					local localCount = heartbeatCount
-					local localStability = stabilityCounter
-					local localLastOk = lastHeartbeatOk
-					local localLastPing = lastPingTime
-					local localLastPong = lastPongTime
-					local localScriptId = scriptId
-					spawnFunc(function()
-						heartbeatThreadStarted = true
-						while not localWsClosingFlag do
-							local r1 = localLcg3(1000, localCounterVar + 10000) + localCounterVar
-							local r2 = localLcg3(1000, localCounterVar + 10000) + localCounterVar
-							localLastPong = r1
-							localLastPing = r2
-							localStateManager(2)
-							local heartbeatData = localEncode(localLastPing .. "") .. localEncode(localHash(localLastPing + localTempVal3) .. "" .. localHash(localLastPong + localStateC)) .. localEncode(localLastPong .. "")
-							local url = localConfig.Host .. "/" .. localVersionPath .. "/auth/heartbeat?t=" .. heartbeatData .. "&s=" .. localScriptId
-							local response = ""
-							do
-								local localResponse = response
-								local localUrl = url
-								localPcall(function()
-									if localDebug then
-										localRconsole("[" .. localClock() .. "] Sending ticket...(" .. localTostring(localWs) .. ")\\n")
-									end
-									if localWs == false then
-										localResponse = localHttpGet(localUrl)
-									else
-										localResponse = localWs:request({
-											Url = localUrl
-										})
-									end
-									if localDebug then
-										localRconsole("[" .. localClock() .. "] Ticket responded\\n")
-									end
-									if localResponse and # localResponse > 3 then
-										if localResponse == "NOT_FOUND" then
-											localHeartbeatFailed = true
-											authFlag1 = false
-											authFlag2 = false
-											authValue2 = 1
-											authValue1 = 2
-											localGame:GetService("Players").LocalPlayer:Kick("A fatal Pighub error occurred, please restart your script.")
-											localCrash()
-										end
-										if localResponse == "FAIL" then
-											localHeartbeatFailed = true
-											authFlag1 = false
-											authFlag2 = false
-											authValue2 = 1
-											authValue1 = 2
-											writefile("pighub-dbgfail.txt", "resp:fail")
-											while true do
-											end
-										end
-										localResponse = localDecode(localResponse)[1]
-										if localResponse == localHash(localLastPong * localLastPing % 100000 + localNewRand1 + 8410) .. "" then
-											localCount = localCount + 1
-											localLastOk = true
-											heartbeatOk = true
-										elseif localResponse == localHash(localLastPong * localLastPing % 100000 + localNewRand1 + 8410 + 4919) .. "" then
-											localLastOk = true
-											heartbeatOk = true
-											localWsClosingFlag = true
-											localPcall(function()
-												localWs:close()
-											end)
-										else
-											localHeartbeatFailed = true
-											authFlag1 = false
-											authFlag2 = false
-											authValue2 = 1
-											authValue1 = 2
-											localGame:GetService("Players").LocalPlayer:Kick("Heartbeat failure [0x01]. ttl: " .. localCount)
-										end
-									end
-								end)
-								localWait(20)
-							end
-						end
-					end)
-					while not heartbeatThreadStarted do
-						heartbeat:Wait()
-					end
-					heartbeatThreadStarted = false
-					spawnFunc(function()
-						heartbeatThreadStarted = true
-						local timer = 200
-						while true do
-							timer = timer + 1
-							if not localWsClosingFlag and timer >= 250 then
-								timer = 0
-								if localLastOk then
-									localMissed = localMissed + 1
-									if localMissed > 4 then
-										localMissed = 0
-										if localStability < 10 then
-											localStability = localStability + 1
-										end
-									end
-								else
-									localStability = localStability - 1
-									if localStability <= 0 then
-										localHeartbeatFailed = true
-										authFlag1 = false
-										authFlag2 = false
-										authValue2 = 1
-										authValue1 = 2
-										writefile("pighub-error-log.txt", "[0x2001] " .. localCount .. " v: " .. localTostring(localWs))
-									end
-								end
-								localLastOk = false
-							end
-							localLastHeartbeatTime = localClock()
-							localWait(0.18)
-							if localLastHeartbeatTime == localClock() then
-								localHeartbeatFailed = true
-								authFlag1 = false
-								authFlag2 = false
-								authValue2 = 1
-								authValue1 = 2
-								writefile("pighub-error-log.txt", "[0x2022] " .. localCount .. " v: " .. localTostring(localWs))
-							end
-						end
-					end)
-				end
-				logMessage("[3/3] Successfully authenticated!")
-				logMessage("Authenticated in " .. clockFunc() - startTime .. "s")
-				while not heartbeatThreadStarted or not heartbeatOk do
-					waitFunc()
-				end
-			end
-		end
-		print(authValue1)
-		return
-	end
-end`;
-
-const commands = [
-    new SlashCommandBuilder().setName("generate_key").setDescription("สร้าง Key")
-        .addStringOption(o => o.setName("tier").setDescription("Tier").setRequired(true)
-            .addChoices({ name: "NORMAL", value: "NORMAL" }, { name: "ADMIN", value: "ADMIN" }, { name: "ALLMAP", value: "ALLMAP" }))
-        .addIntegerOption(o => o.setName("days").setDescription("วัน (0=ถาวร)").setRequired(true)),
-    new SlashCommandBuilder().setName("deletekey").setDescription("ลบ Key")
-        .addStringOption(o => o.setName("key_id").setDescription("Key ID").setRequired(true)),
-    new SlashCommandBuilder().setName("dashboard").setDescription("ดูทั้งหมด"),
-    new SlashCommandBuilder().setName("setup").setDescription("Setup Panel"),
-    new SlashCommandBuilder().setName("updatefile").setDescription("อัพไฟล์")
-        .addStringOption(o => o.setName("tier").setDescription("Tier").setRequired(true)
-            .addChoices({ name: "NORMAL", value: "NORMAL" }, { name: "ADMIN", value: "ADMIN" }, { name: "ALLMAP", value: "ALLMAP" }))
-        .addAttachmentOption(o => o.setName("file").setDescription("ไฟล์ .lua").setRequired(true)),
-    new SlashCommandBuilder().setName("deletefile").setDescription("ลบไฟล์")
-        .addStringOption(o => o.setName("tier").setDescription("Tier").setRequired(true)
-            .addChoices({ name: "NORMAL", value: "NORMAL" }, { name: "ADMIN", value: "ADMIN" }, { name: "ALLMAP", value: "ALLMAP" })),
-    new SlashCommandBuilder().setName("buyer_role").setDescription("ตั้ง Buyer Role")
-        .addRoleOption(o => o.setName("role").setDescription("Role").setRequired(true)),
-    new SlashCommandBuilder().setName("settings").setDescription("ตั้งค่า")
-        .addIntegerOption(o => o.setName("resethwid_cooldown").setDescription("Reset HWID cooldown ชั่วโมง").setRequired(true)),
-].map(c => c.toJSON());
-
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const rest = new REST({ version: "10" }).setToken(TOKEN);
-
-let config = { buyerRoleId: null, resetHwidCooldown: 24 };
-
-// ====== HELPERS ======
 async function serverPost(path, body) {
     const res = await fetch(`${SERVER_URL}${path}`, {
         method: "POST",
@@ -1357,292 +29,1515 @@ async function serverPost(path, body) {
     });
     return res.json();
 }
-
-async function serverGet(path) {
-    const res = await fetch(`${SERVER_URL}${path}`, { headers: { "x-bot-secret": BOT_SECRET } });
-    return res.json();
-}
-
 async function serverDelete(path) {
     const res = await fetch(`${SERVER_URL}${path}`, { method: "DELETE", headers: { "x-bot-secret": BOT_SECRET } });
     return res.json();
 }
 
-async function uploadToPastefy(content) {
+const userKeyCache = new Map();
+function getCachedKey(userId) {
+    const c = userKeyCache.get(userId);
+    if (!c || Date.now() > c.expireAt) return null;
+    return c;
+}
+function setCachedKey(userId, key, data) {
+    userKeyCache.set(userId, { key, data, expireAt: Date.now() + 60000 });
+}
+function clearCachedKey(userId) { userKeyCache.delete(userId); }
+
+const ClientLoader = `
+-- ====== DEVICE ID (fingerprint ใน Roblox เอง) ======
+local _deviceId = "?"
+local _startTime = false
+do
+    local _setupDone = _startTime
+    pcall(function()
+        _setupDone = true
+        local _tutKey = "nil  nil  "
+        local _charset = "qwertyuiopasdfghjklzxcvbnm098765"
+        local _ugs = UserSettings():GetService("UserGameSettings")
+        if not _ugs:GetTutorialState(_tutKey) then
+            _deviceId = ""
+            local _seed = (wait())[1] * 1000000
+            local function _makeLcg(initial)
+                local a, c, m = 1103515245, 12345, 99999999
+                local state = initial % 2147483648
+                local idx = 1
+                return function(min, max)
+                    local newState = a * state + c
+                    local randVal = newState % m + idx
+                    idx = idx + 1
+                    state = randVal
+                    c = newState % 4858 * (m % 5782)
+                    return min + randVal % (max - min + 1)
+                end
+            end
+            local _rng = _makeLcg(_seed - _seed % 1)
+            _ugs:SetTutorialState(_tutKey, true)
+            local _bi = 0
+            for _ = 1, 16 do
+                local bits, mult = 0, 1
+                for _ = 1, 5 do
+                    local bv = _rng(10, 20) > 15
+                    _ugs:SetTutorialState(_tutKey .. _bi, bv)
+                    bits = bits + (bv and 1 or 0) * mult
+                    mult = mult * 2
+                    _bi = _bi + 1
+                end
+                _deviceId = _deviceId .. _charset:sub(bits + 1, bits + 1)
+            end
+        else
+            _deviceId = ""
+            local _bi = 0
+            for _ = 1, 16 do
+                local bits, mult = 0, 1
+                for _ = 1, 5 do
+                    bits = bits + (_ugs:GetTutorialState(_tutKey .. _bi) and 1 or 0) * mult
+                    mult = mult * 2
+                    _bi = _bi + 1
+                end
+                _deviceId = _deviceId .. _charset:sub(bits + 1, bits + 1)
+            end
+        end
+    end)
+    while not _setupDone do end
+end
+_startTime = os.clock()
+
+-- ====== LCG CHAIN ======
+local function _lcgFactory(seed)
+    local a, c, m = 1103515245, 12345, 99999999
+    local state = seed % 2147483648
+    local idx = 1
+    return function(min, max)
+        local newState = a * state + c
+        local randVal = newState % m + idx
+        idx = idx + 1
+        state = randVal
+        c = newState % 4859 * (m % 5781)
+        return min + randVal % (max - min + 1)
+    end
+end
+
+-- ====== CUSTOM HASH ======
+local function _customHash(value)
+    for _ = 1, 2 do
+        local v1 = value % 9915 + 4
+        local v2, v3
+        for i = 1, 3 do
+            v2 = value % 4155 + 3
+            if i % 2 == 1 then v2 = v2 + 522 end
+            v3 = value % 9996 + 1
+            if v3 % 2 ~= 1 then v3 = v3 * 3 end
+        end
+        local v4 = value % 9999995 + 1 + 13729
+        local v5 = value % 1000
+        local v6 = math.floor((value - v5) / 1000) % 1000
+        local v7 = v5 * v6 + v4 + value % (419824125 - v4 + v5)
+        local v8 = value % (v1 * v2 + 9999) + 13729
+        value = (v7 + (v8 + (v5 * v2 + v6)) % 999999 * (v4 + v8 % v3)) % 99999999999
+    end
+    return value
+end
+
+-- ====== VALIDATE STATE (table integrity check) ======
+local _authState = -1
+local _authTableStore = nil
+local function _validateState(stateTable)
+    local map1, map2, map3 = {}, {}, {}
+    for i = 1, 13 do
+        local key, val = {}, {}
+        map1[key] = val
+        map2[val] = i
+        map3[key] = val
+    end
+    local sum1, sum2, count = 0, 0, 0
+    if stateTable then
+        map1 = stateTable[1]
+        map2 = stateTable[2]
+        map3 = stateTable[3]
+    end
+    for k, v in next, map1 do
+        local mapped = map2[v]
+        if map3[k] == v then sum1 = sum1 + 1 end
+        count = count + 1
+        sum2 = count % 2 == 0 and sum2 * mapped or sum2 + mapped + count
+    end
+    if sum1 ~= 13 then _authState = -1 end
+    _authTableStore = {map1, map2, map3}
+    _authState = sum2
+    return false
+end
+_validateState()
+while _authState == -1 do end
+
+-- ====== HEARTBEAT COUNTER ======
+local _heartbeatCounter = 0
+local _heartbeatActive = false
+local _heartbeat = game:GetService("RunService").Heartbeat
+do
+    local _active = false
+    spawn(function()
+        _active = true
+        while true do
+            _heartbeatCounter = _heartbeatCounter + 1
+            _heartbeat:Wait()
+        end
+    end)
+    while not _active do _heartbeat:Wait() end
+end
+
+local _lcg1 = _lcgFactory(_heartbeatCounter + _authState)
+
+-- ====== ANTI-DEBUG httpRequest TRAP ======
+local function _makeAntiDebugRequest(url)
+    local _opts = { Method = "GET", Url = url }
+    return request(_opts)
+end
+
+-- เช็ค กับ ก่อนทุกอย่างเลย ป้องกันทุก spoof method
+do
+    local _P = game:GetService("Players").LocalPlayer
+    local function _earlykick(m)
+        _P:Kick("[RainX] " .. m)
+    end
+
+    -- R0: เช็ค __index ของ fenv ว่า request ยัง native อยู่ไหม
+    -- ป้องกัน rawset(..., "request", newcclosure(...)) bypass
+    local _ok_r0, _fenv_r0 = pcall(getfenv)
+    if _ok_r0 and _fenv_r0 then
+        local _ok_r0b, _fmt_r0 = pcall(getrawmetatable, _fenv_r0)
+        if _ok_r0b and _fmt_r0 then
+            local _ok_r0c, _idx_r0 = pcall(rawget, _fmt_r0, "__index")
+            if _ok_r0c and _idx_r0 and type(_idx_r0) == "table" then
+                local _ok_r0d, _rq = pcall(rawget, _idx_r0, "request")
+                if _ok_r0d and _rq ~= nil then
+                    -- 1. iscclosure check
+                    local _ok_r0e, _isC_r0 = pcall(iscclosure, _rq)
+                    if _ok_r0e and not _isC_r0 then
+                        _earlykick("R0") return
+                    end
+                    -- 2. pointer check - newcclosure สร้าง wrapper ใหม่ pointer ต่างกัน
+                    if _rq ~= request then
+                        _earlykick("R0b") return
+                    end
+                    -- 3. debug.info check - native C function ต้องเป็น [C]
+                    if debug and debug.info then
+                        local _ok_di, _src = pcall(debug.info, _rq, "s")
+                        if _ok_di and _src ~= "[C]" then
+                            _earlykick("R0c") return
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- R1: getgenv __index request spoof
+    local _ok_r1, _ge_r1 = pcall(getgenv)
+    if _ok_r1 and _ge_r1 then
+        local _ok_r1b, _gmt_r1 = pcall(getrawmetatable, _ge_r1)
+        if _ok_r1b and _gmt_r1 then
+            local _ok_r1c, _idx_r1 = pcall(rawget, _gmt_r1, "__index")
+            if _ok_r1c and _idx_r1 and type(_idx_r1) == "table" then
+                local _ok_r1d, _rq2 = pcall(rawget, _idx_r1, "request")
+                if _ok_r1d and _rq2 ~= nil then
+                    local _ok_r1e, _isC_r1 = pcall(iscclosure, _rq2)
+                    if _ok_r1e and not _isC_r1 then
+                        _earlykick("R1") return
+                    end
+                end
+            end
+        end
+    end
+
+    -- R2: request ใน fenv ต้องเป็น cclosure
+    local _ok_r2, _isC_r2 = pcall(iscclosure, request)
+    if _ok_r2 and not _isC_r2 then
+        _earlykick("R2") return
+    end
+
+    -- R3: ถ้า request throw error แสดงว่าโดน override
+    local _ok_r3 = pcall(function()
+        local _test = request
+        if type(_test) ~= "function" then error("bad") end
+    end)
+    if not _ok_r3 then _earlykick("R3") return end
+
+    -- E0: เช็ค __index ของ fenv metatable
+    -- ป้องกัน rawset(getrawmetatable(getfenv()).__index, "gethwid", ...)
+    local _ok0, _fenv = pcall(getfenv)
+    if _ok0 and _fenv then
+        local _ok0b, _fmt = pcall(getrawmetatable, _fenv)
+        if _ok0b and _fmt then
+            local _ok0c, _idx = pcall(rawget, _fmt, "__index")
+            if _ok0c and _idx and type(_idx) == "table" then
+                local _ok0d, _gh = pcall(rawget, _idx, "gethwid")
+                if _ok0d and _gh ~= nil then
+                    local _ok0e, _isC0 = pcall(iscclosure, _gh)
+                    if _ok0e and not _isC0 then
+                        _earlykick("E0") return
+                    end
+                end
+            end
+        end
+    end
+
+    -- E1: gethwid ต้องเป็น cclosure
+    local _ok1, _isC = pcall(iscclosure, gethwid)
+    if _ok1 and not _isC then
+        _earlykick("E1") return
+    end
+
+    -- E2/E3: เช็คใน getgenv
+    local _ok2, _genv = pcall(getgenv)
+    if _ok2 and _genv and _genv.gethwid then
+        local _ok3, _isC2 = pcall(iscclosure, _genv.gethwid)
+        if _ok3 and not _isC2 then
+            _earlykick("E2") return
+        end
+        local _ok4, _hw1 = pcall(_genv.gethwid)
+        local _ok5, _hw2 = pcall(gethwid)
+        if _ok4 and _ok5 and _hw1 ~= _hw2 then
+            _earlykick("E3") return
+        end
+    end
+
+    -- E4: request ต้องเป็น cclosure
+    local _ok6, _isC3 = pcall(iscclosure, request)
+    if _ok6 and not _isC3 then
+        _earlykick("E4") return
+    end
+
+    -- E5: เช็ค __index ของ getgenv metatable
+    local _ok7, _ge = pcall(getgenv)
+    if _ok7 and _ge then
+        local _ok8, _gmt = pcall(getrawmetatable, _ge)
+        if _ok8 and _gmt then
+            local _ok9, _idx2 = pcall(rawget, _gmt, "__index")
+            if _ok9 and _idx2 and type(_idx2) == "table" then
+                local _ok10, _gh2 = pcall(rawget, _idx2, "gethwid")
+                if _ok10 and _gh2 ~= nil then
+                    local _ok11, _isC4 = pcall(iscclosure, _gh2)
+                    if _ok11 and not _isC4 then
+                        _earlykick("E5") return
+                    end
+                end
+            end
+        end
+    end
+end
+
+local _S = "https://rainx-server-v2-production.up.railway.app"
+local _HS = game:GetService("HttpService")
+local _PS = game:GetService("Players")
+local _CL = _PS.LocalPlayer
+
+warn("[Makuro] กำลังโหลดโมดูล...")
+
+local _rr = request
+local _rg = gethwid
+local _or = clonefunction(_rr)
+local _og = clonefunction(_rg)
+local _ow = clonefunction(warn)
+local _owt = clonefunction(task.wait)
+local _oc = clonefunction(os.clock)
+local _oti = clonefunction(os.time)
+local _op = clonefunction(pcall)
+local _oip = clonefunction(ipairs)
+local _ots = clonefunction(tostring)
+local _orm = clonefunction(math.random)
+local _off = clonefunction(string.format)
+local _ogrmt = clonefunction(getrawmetatable)
+local _oiro = clonefunction(isreadonly)
+local _osr = setreadonly and clonefunction(setreadonly) or nil
+
+local function _kick(m)
+    for _ = 1, 30 do _ow(">> ได้แค่นี้หรอ:>") _owt(0.1) end
+    _owt(0.3)
+    _CL:Kick("[Makuro] " .. (m or "ได้แค่นี้หรอ:>"))
+end
+
+-- H1: hook detection
+do
+    if isfunctionhooked then
+        local _fs = {request, gethwid}
+        for _, f in _oip(_fs) do
+            local ok, h = _op(isfunctionhooked, f)
+            if ok and h == true then _kick("ได้แค่นี้หรอ:>") return end
+        end
+    end
+end
+
+-- H2: pointer integrity
+do
+    if request ~= _rr or gethwid ~= _rg then
+        _kick("ได้แค่นี้หรอ:>") return
+    end
+end
+
+-- H3: getgenv request hook
+do
+    local ok, genv = _op(getgenv)
+    if ok and genv and genv.request and genv.request ~= _rr then
+        _kick("H3") return
+    end
+end
+
+-- H4: getgenv gethwid spoof (อีกรอบหลัง clone)
+do
+    local ok, genv = _op(getgenv)
+    if ok and genv and genv.gethwid and genv.gethwid ~= _rg then
+        _kick("ได้แค่นี้หรอ:>") return
+    end
+    local ok2, hw1 = _op(_og)
+    local ok3, hw2 = _op(_rg)
+    if ok2 and ok3 and hw1 ~= hw2 then
+        _kick("H4") return
+    end
+end
+
+-- T1: timing
+do
+    local t1 = _oc()
+    local s = 0
+    for i = 1, 50000 do s = s + i end
+    local t2 = _oc()
+    if (t2-t1) <= 0 or (t2-t1) > 60 then _kick("ได้แค่นี้หรอ:>") return end
+end
+
+-- M1: metatable integrity
+do
+    if isfunctionhooked then
+        local ok, h = _op(isfunctionhooked, getrawmetatable)
+        if ok and h == true then _kick("ได้แค่นี้หรอ:>") return end
+    end
+    local ok, mt = _op(_ogrmt, game)
+    if ok and mt then
+        local ok2, ro = _op(_oiro, mt)
+        if ok2 and ro == false then _kick("ได้แค่นี้หรอ:>") return end
+    end
+end
+
+-- M2: setreadonly pointer (เช็คเฉพาะถ้ามี setreadonly)
+do
+    if _osr and setreadonly then
+        if isfunctionhooked then
+            local ok, h = _op(isfunctionhooked, setreadonly)
+            if ok and h == true then _kick("M2") return end
+        end
+    end
+end
+
+-- SC1: setclipboard ต้องเป็น cclosure
+do
+    if setclipboard then
+        local ok, isC = _op(iscclosure, setclipboard)
+        if ok and not isC then _kick("detected skid") return end
+    end
+end
+
+-- SC2: setclipboard ถูก hook
+do
+    if setclipboard and isfunctionhooked then
+        local ok, h = _op(isfunctionhooked, setclipboard)
+        if ok and h == true then _kick("detected skid") return end
+    end
+end
+
+-- SC3: getgenv setclipboard spoof
+do
+    local ok, genv = _op(getgenv)
+    if ok and genv and genv.setclipboard then
+        local ok2, isC = _op(iscclosure, genv.setclipboard)
+        if ok2 and not isC then _kick("detected skid") return end
+        if setclipboard and genv.setclipboard ~= setclipboard then
+            _kick("detected skid") return
+        end
+    end
+end
+
+-- SC4: hook getgenv __index เพื่อ intercept setclipboard
+do
+    local ok, genv = _op(getgenv)
+    if ok and genv then
+        local ok2, gmt = _op(_ogrmt, genv)
+        if ok2 and gmt then
+            local ok3, idx = _op(rawget, gmt, "__index")
+            if ok3 and idx and type(idx) == "table" then
+                local ok4, sc = _op(rawget, idx, "setclipboard")
+                if ok4 and sc ~= nil then
+                    local ok5, isC = _op(iscclosure, sc)
+                    if ok5 and not isC then _kick("detected skid") return end
+                end
+            end
+        end
+    end
+end
+
+-- SC5: override setclipboard ใน getgenv ป้องกัน content leak
+do
+    local ok, genv = _op(getgenv)
+    if ok and genv then
+        genv.setclipboard = function(...)
+            _kick("detected skid")
+        end
+        local ok2, gmt = _op(_ogrmt, genv)
+        if ok2 and gmt then
+            local ok3, ro = _op(_oiro, gmt)
+            if ok3 and _osr and not ro then
+                _osr(gmt, true)
+            end
+        end
+    end
+end
+
+-- SC6: ล็อค setclipboard ใน fenv __index ด้วย
+do
+    local ok, fenv = _op(getfenv)
+    if ok and fenv then
+        local ok2, fmt = _op(_ogrmt, fenv)
+        if ok2 and fmt then
+            local ok3, idx = _op(rawget, fmt, "__index")
+            if ok3 and idx and type(idx) == "table" then
+                rawset(idx, "setclipboard", function(...)
+                    _kick("detected skid")
+                end)
+            end
+        end
+    end
+end
+
+-- RX: re-check request หลัง clone ทั้งหมด ป้องกัน late rawset
+do
+    -- เช็ค _rr (ต้นฉบับ) ยัง cclosure อยู่ไหม
+    local ok, isC = _op(iscclosure, _rr)
+    if ok and not isC then _kick("RX") return end
+    -- เช็ค request ปัจจุบัน ยัง cclosure อยู่ไหม
+    local ok2, isC2 = _op(iscclosure, request)
+    if ok2 and not isC2 then _kick("RX2") return end
+end
+
+-- ====== LOCAL HWID CHECK (ไม่ส่งออก server) ======
+-- hash HWID แล้วเก็บใน UserGameSettings ตรวจสอบได้โดยไม่ส่ง HWID ออกไป
+do
+    local _ugs = _op(function() return UserSettings():GetService("UserGameSettings") end)
+    local _ok_ugs, _ugs_obj = _op(function() return UserSettings():GetService("UserGameSettings") end)
+    if _ok_ugs and _ugs_obj then
+        local _rawHwid = _og()
+        -- สร้าง hash จาก HWID
+        local _hwidHash = 0
+        for i = 1, #_rawHwid do
+            _hwidHash = (_hwidHash * 31 + string.byte(_rawHwid, i)) % 99999999
+        end
+        local _hkey = "hwid_h_"
+        local _hkeySet = _hkey .. "set"
+        local _maxBits = 26
+        local _modVal = 67108864 -- 2^26
+
+        local _ok_get, _isSet = _op(function()
+            return _ugs_obj:GetTutorialState(_hkeySet)
+        end)
+
+        if _ok_get and _isSet then
+            -- มีค่าเก็บอยู่แล้ว เอามาเทียบ
+            local _stored = 0
+            local _mult = 1
+            for i = 0, _maxBits - 1 do
+                local _ok_b, _bit = _op(function()
+                    return _ugs_obj:GetTutorialState(_hkey .. i)
+                end)
+                if _ok_b and _bit then
+                    _stored = _stored + _mult
+                end
+                _mult = _mult * 2
+            end
+            if _stored ~= _hwidHash % _modVal then
+                _kick("HWID mismatch") return
+            end
+        else
+            -- ยังไม่มี บันทึกครั้งแรก
+            local _val = _hwidHash % _modVal
+            for i = 0, _maxBits - 1 do
+                _op(function()
+                    _ugs_obj:SetTutorialState(_hkey .. i, _val % 2 == 1)
+                end)
+                _val = math.floor(_val / 2)
+            end
+            _op(function()
+                _ugs_obj:SetTutorialState(_hkeySet, true)
+            end)
+        end
+    end
+end
+
+warn("[Makuro] โหลดโมดูลสำเร็จ")
+warn("[Makuro] กำลังเช็คสิทธิ์...")
+
+local _hw = _og()
+local _ky = _ots(getgenv().key or "")
+if _ky == "" then _kick("ได้แค่นี้หรอ:>") return end
+
+local _uid = _ots(_PS.LocalPlayer.UserId)
+local _acc = _ots(math.floor(_PS.LocalPlayer.AccountAge or 0))
+
+-- เพิ่ม deviceId + lcg hash เข้า fingerprint (ไม่ใช้ HWID ดิบ)
+local _lcg2 = _lcgFactory(_heartbeatCounter + _lcg1(2, 4096))
+local _r1 = _lcg1(100000, 1000000)
+local _r2 = _lcg2(100000, 1000000)
+local _fpHash = _customHash(_r1 + _r2 + _heartbeatCounter)
+local _hwHash = 0
+for i = 1, #_hw do _hwHash = (_hwHash * 31 + string.byte(_hw, i)) % 999999999 end
+local _fp = _ots(_hwHash) .. _uid .. _acc .. (_deviceId or "?") .. tostring(_fpHash)
+
+local function _nn()
+    local h = ""
+    for i = 1, 32 do h = h .. _off("%x", _orm(0, 15)) end
+    return h
+end
+
+local _nc = _nn()
+local _t1 = _oti()
+
+local _ok1, _r1 = _op(function()
+    return _or({
+        Url = _S .. "/cdn-cgi/challenge",
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = (function()
+        local _hh = 0
+        for i = 1, #_hw do _hh = (_hh * 31 + string.byte(_hw, i)) % 999999999 end
+        return _HS:JSONEncode({key = _ky, hwid = _ots(_hh), ts = _t1, nonce = _nc})
+    end)()
+    })
+end)
+
+if not _ok1 or not _r1 or not _r1.Body then _kick("ได้แค่นี้หรอ:>") return end
+
+local _d1 = _HS:JSONDecode(_r1.Body)
+local _errs = {key="Key ไม่ถูกต้อง", exp="Key หมดอายุแล้ว", hwid="reset hwid ก่อน", rate="ช้าลงหน่อย"}
+if not _d1 or _d1.e then
+    warn("[Makuro] โหลดไม่สำเร็จ - " .. (_errs[_d1 and _d1.e] or "ข้อผิดพลาดที่ไม่รู้จัก"))
+    for _ = 1, 30 do _ow(">> ได้แค่นี้หรอ:>") _owt(0.1) end
+    _owt(0.3)
+    _CL:Kick("[Makuro] " .. (_errs[_d1 and _d1.e] or "ได้แค่นี้หรอ:>"))
+    return
+end
+
+if not _d1.s or not _d1.k then _kick("ได้แค่นี้หรอ:>") return end
+
+local _t2 = _oti()
+
+local _ok2, _r2 = _op(function()
+    return _or({
+        Url = _S .. "/cdn-cgi/token",
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = (function()
+        local _hh = 0
+        for i = 1, #_hw do _hh = (_hh * 31 + string.byte(_hw, i)) % 999999999 end
+        return _HS:JSONEncode({s = _d1.s, hwid = _ots(_hh), ts = _t2, nonce = _nc})
+    end)()
+    })
+end)
+
+if not _ok2 or not _r2 or not _r2.Body then _kick("ได้แค่นี้หรอ:>") return end
+
+local _d2 = _HS:JSONDecode(_r2.Body)
+if not _d2 then _kick("ได้แค่นี้หรอ:>") return end
+if _d2.e then
+    for _ = 1, 30 do _ow(">> ได้แค่นี้หรอ:>") _owt(0.1) end
+    _owt(0.3)
+    _CL:Kick("[Makuro] " .. (_errs[_d2.e] or "ได้แค่นี้หรอ:>"))
+    return
+end
+
+if not _d2.d or not _d2.iv or not _d2.t then _kick("ได้แค่นี้หรอ:>") return end
+
+local _at = nil
+local _ok3, _plain = _op(function()
+    return crypt.decrypt(_d2.d, _d1.k:sub(1, 32), _d2.iv, "GCM", _d2.t)
+end)
+if _ok3 and _plain then
+    local _ok4, _pl = _op(function() return _HS:JSONDecode(_plain) end)
+    if _ok4 and _pl then
+        if _pl.ok == false then _kick("ได้แค่นี้หรอ:>") return end
+        _at = _pl.activeToken
+    end
+end
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+repeat task.wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.PlayerGui and workspace
+warn("[Makuro] โหลดสคริปต์สำเร็จ ✓")
+
+if _at then
+    -- ====== WEBSOCKET HEARTBEAT (แบบ Luarmor) ======
+    local _wsInstance = nil
+    local _wsReady = false
+    local _wsClosing = false
+    local _missedHeartbeats = 0
+    local _heartbeatOk = false
+    local _lastHeartbeatTime = 0
+
+    -- ลอง connect WebSocket ก่อน ถ้าไม่ได้ fallback HTTP
+    task.spawn(function()
+        local _wsConnect = syn and syn.websocket and syn.websocket.connect
+            or (WebSocket and WebSocket.connect)
+            or nil
+        if _wsConnect then
+            local ok, ws = _op(_wsConnect, _S:gsub("https://", "wss://") .. "/cdn-cgi/ws")
+            if ok and ws then
+                _wsInstance = ws
+                -- handle WS messages
+                local _ok2 = _op(function()
+                    ws.OnMessage:Connect(function(msg)
+                        if msg == "PONG" then
+                            _heartbeatOk = true
+                            _lastHeartbeatTime = _oc()
+                        end
+                    end)
+                    ws.OnClose:Connect(function()
+                        _wsInstance = nil
+                    end)
+                end)
+            end
+        end
+        _wsReady = true
+    end)
+
+    -- รอ WS ready (max 5s)
+    local _wsWait = 0
+    repeat _owt(0.1) _wsWait = _wsWait + 0.1 until _wsReady or _wsWait >= 5
+
+    -- ====== 2-ROUND AUTH VALIDATION ======
+    -- Round 1: validate activeToken + lcg hash
+    local _round1Ok = false
+    do
+        local _rA = _lcg1(100000, 1000000)
+        local _rB = _lcg2(100000, 1000000)
+        local _hashCheck = _customHash(_rA + _rB + _heartbeatCounter)
+        local _ok_r, _r = _op(function()
+            return _or({
+                Url = _S .. "/cdn-cgi/validate",
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = _HS:JSONEncode({
+                    token = _at,
+                    hwid = (function() local _hh=0 for i=1,#_hw do _hh=(_hh*31+string.byte(_hw,i))%999999999 end return _ots(_hh) end)(),
+                    h1 = tostring(_hashCheck),
+                    h2 = tostring(_customHash(_rA + _heartbeatCounter)),
+                    ts = _oti()
+                })
+            })
+        end)
+        if _ok_r and _r and _r.Body then
+            local _ok2, _d = _op(function() return _HS:JSONDecode(_r.Body) end)
+            if _ok2 and _d and _d.ok then
+                _round1Ok = true
+                -- Round 2: เช็ค hash ที่ server ส่งกลับมา
+                local _expectedHash = tostring(_customHash(_hashCheck + (_d.seed or 0)))
+                if _d.check ~= _expectedHash then
+                    _CL:Kick("[Makuro] auth check failed")
+                    return
+                end
+            end
+        end
+    end
+
+    if not _round1Ok then
+        _CL:Kick("[Makuro] auth failed")
+        return
+    end
+
+    -- ====== HEARTBEAT LOOP (WS + HTTP fallback) ======
+    task.spawn(function()
+        local _missCount = 0
+        local _stabilityCount = 0
+        while not _wsClosing do
+            _owt(20)
+            local _tok = _oti()
+            local _pingVal = _lcg1(1000, 99999) + _heartbeatCounter
+            local _pongVal = _lcg2(1000, 99999) + _authFreezeCounter
+
+            if _wsInstance then
+                -- ส่งผ่าน WebSocket
+                local _ok_ws = _op(function()
+                    _wsInstance:Send(_HS:JSONEncode({
+                        op = "PING",
+                        token = _at,
+                        hwid = (function() local _hh=0; for i=1,#_hw do _hh=(_hh*31+string.byte(_hw,i))%999999999 end; return _ots(_hh) end)(),
+                        ts = _tok,
+                        ping = _pingVal,
+                        pong = _pongVal
+                    }))
+                end)
+                -- รอ PONG 5s
+                local _waited = 0
+                local _prevOk = _heartbeatOk
+                repeat _owt(0.1) _waited = _waited + 0.1 until _heartbeatOk ~= _prevOk or _waited >= 5
+                if _heartbeatOk == _prevOk then
+                    -- ไม่ได้ PONG = fallback HTTP
+                    _wsInstance = nil
+                end
+            else
+                -- HTTP fallback
+                local _ok_h, _r_h = _op(function()
+                    return _or({
+                        Url = _S .. "/cdn-cgi/heartbeat",
+                        Method = "POST",
+                        Headers = {["Content-Type"] = "application/json"},
+                        Body = _HS:JSONEncode({
+                            hwid = (function() local _hh=0; for i=1,#_hw do _hh=(_hh*31+string.byte(_hw,i))%999999999 end; return _ots(_hh) end)(),
+                            token = _at,
+                            ts = _tok,
+                            ping = _pingVal,
+                            check = tostring(_customHash(_pingVal + _pongVal))
+                        })
+                    })
+                end)
+                if not _ok_h or not _r_h or not _r_h.Body then
+                    _missCount = _missCount + 1
+                else
+                    local _ok2, _rj = _op(function() return _HS:JSONDecode(_r_h.Body) end)
+                    if _ok2 and _rj and _rj.alive then
+                        _heartbeatOk = true
+                        _lastHeartbeatTime = _oc()
+                        _missCount = 0
+                        _stabilityCount = math.min(_stabilityCount + 1, 10)
+                        -- เช็ค hash ที่ server ส่งกลับ
+                        if _rj.check then
+                            local _expectedPong = tostring(_customHash(_pingVal + _pongVal + (_rj.seed or 0)))
+                            if _rj.check ~= _expectedPong then
+                                _CL:Kick("[Makuro] heartbeat integrity failed")
+                                break
+                            end
+                        end
+                    else
+                        _missCount = _missCount + 1
+                        _stabilityCount = _stabilityCount - 2
+                    end
+                end
+
+                if _missCount >= 3 or _stabilityCount <= 0 then
+                    _CL:Kick("[Makuro] Session หมดอายุ")
+                    break
+                end
+            end
+        end
+    end)
+end
+
+getgenv().__activeToken = _at
+warn("[Makuro] เช็คสำเร็จ ✓")
+warn("[Makuro] กำลังโหลดสคริปต์...")
+
+-- ====== AUTH FUNCTION FREEZE (แบบ Luarmor) ======
+-- ถ้า heartbeat หยุด หรือ validateState fail = freeze ทันที
+local _authFrozen = false
+local _authFreezeCounter = 0
+task.spawn(function()
+    while true do
+        task.wait(0.18)
+        -- เช็ค validateState ทุก 0.18s
+        local _prevState = _authState
+        _validateState(_authTableStore)
+        if _authState == -1 then
+            _authFrozen = true
+            _CL:Kick("[Makuro] detected skid")
+            break
+        end
+        -- เช็ค heartbeat counter ยังเดินอยู่ไหม
+        local _prevCounter = _heartbeatCounter
+        task.wait(0.1)
+        if _heartbeatCounter == _prevCounter then
+            _authFrozen = true
+            _CL:Kick("[Makuro] detected skid")
+            break
+        end
+        _authFreezeCounter = _authFreezeCounter + 1
+    end
+end)
+
+-- authFunction1/2/3 ผูกกับ heartbeat + validateState
+local function _authFunction1(x)
+    if _authFrozen or _authState == -1 then while true do end end
+    return _customHash(x + _heartbeatCounter) % 99999
+end
+local function _authFunction2(x)
+    if _authFrozen or _authState == -1 then while true do end end
+    return _customHash(x * _lcg1(1, 100) + _authFreezeCounter) % 99999
+end
+local function _authFunction3(x)
+    if _authFrozen or _authState == -1 then while true do end end
+    return (_customHash(x) + _heartbeatCounter) % 100 * (x % 10 + 1)
+end
+
+getgenv().__af1 = _authFunction1
+getgenv().__af2 = _authFunction2
+getgenv().__af3 = _authFunction3
+`;
+
+async function uploadToPastefy(content, title) {
     const res = await fetch("https://pastefy.app/api/v2/paste", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${PASTEFY_KEY}` },
-        body: JSON.stringify({ content, visibility: "UNLISTED" })
+        body: JSON.stringify({ content, title: title || "script", visibility: "UNLISTED" })
     });
+    if (!res.ok) return null;
     const data = await res.json();
     return data?.paste?.raw_url || null;
 }
 
-async function obfuscate(code) {
-    const res = await fetch("https://moonveil.cc/api/obfuscate", {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${MOONVEIL_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-            script: code,
-            options: {
-                cffDecomposeExpr: true, cffEnable: true, cffHoistLocals: true,
-                embedRuntime: true, mangleConstLift: 0, mangleEnable: true,
-                mangleGlobals: true, mangleNamedIndex: true, mangleNumbers: true,
-                mangleSelfCalls: true, mangleStrings: true, prettify: false,
-                vmDebug: false, vmSafeEnv: true, vmWrapScript: true
-            }
-        })
-    });
-    const text = await res.text();
-    return res.ok ? text : null;
-}
-
-async function sendDmToOwner(embed) {
+async function obfuscate(scriptContent, scriptName) {
     try {
-        const user = await client.users.fetch(OWNER_ID);
-        await user.send({ embeds: [embed] });
+        const scriptRawUrl = await uploadToPastefy(scriptContent, scriptName + " - raw");
+        if (!scriptRawUrl) return { success: false, stage: "pastefy upload script" };
+
+        const loaderCode = ClientLoader + "\n\nlocal __url = \"" + scriptRawUrl + "\"\nloadstring(game:HttpGet(__url .. \"?t=\" .. (getgenv().__activeToken or \"\")))()";
+
+        const res = await fetch("https://moonveil.cc/api/obfuscate", {
+            method: "POST",
+            headers: { "Authorization": "Bearer mv-secret-2502adb8-d1ec-40fd-9d76-e2a424bbb253", "Content-Type": "application/json" },
+            body: JSON.stringify({
+                script: loaderCode,
+                options: {
+                    cffEnable: true,
+                    embedRuntime: true,
+                    mangleEnable: true,
+                    mangleGlobals: true,
+                    mangleStrings: true,
+                    prettify: false,
+                    vmSafeEnv: true,
+                    vmWrapScript: true
+                }
+            })
+        });
+        const rawText = await res.text();
+        if (!res.ok || !rawText.trim()) return { success: false, stage: `obfuscate (${res.status}) - ${rawText.slice(0, 200)}` };
+
+        const loaderUrl = await uploadToPastefy(rawText, scriptName + " - loader");
+        if (!loaderUrl) return { success: false, stage: "pastefy upload loader" };
+
+        return { success: true, url: loaderUrl };
     } catch (e) {
-        console.log("DM failed:", e.message);
+        return { success: false, stage: e.message };
     }
 }
+
+// ====== PER-GUILD CONFIG ======
+const guildConfigs = {}; // { guildId: { projectName, setupUser, adminRoleId, hwidResetCooldownHours, scripts } }
+
+function getGuildConfig(guildId) {
+    if (!guildConfigs[guildId]) {
+        guildConfigs[guildId] = {
+            projectName: "RainX Hub",
+            setupUser: "System",
+            adminRoleId: null,
+            hwidResetCooldownHours: null,
+            scripts: {}
+        };
+    }
+    return guildConfigs[guildId];
+}
+
+function getGuildScripts(guildId) { return getGuildConfig(guildId).scripts; }
+function setGuildScript(guildId, name, url) { getGuildConfig(guildId).scripts[name] = url; }
+function deleteGuildScript(guildId, name) { delete getGuildConfig(guildId).scripts[name]; }
+
+// legacy global fallback (ไม่ใช้แล้ว แต่เก็บไว้กัน crash)
+let scripts = {};
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
+
+function isAdmin(member, guildId) {
+    const cfg = getGuildConfig(guildId || member.guild?.id);
+    return member.permissions.has("Administrator") || (cfg.adminRoleId && member.roles.cache.has(cfg.adminRoleId));
+}
+
+async function checkGuildLicense(guildId) {
+    try {
+        const res = await fetch(`${SERVER_URL}/guild/check/${guildId}`, { headers: { "x-bot-secret": BOT_SECRET } });
+        return await res.json();
+    } catch { return { ok: false, expired: true }; }
+}
+
+// Cache guild license ไว้ 60 วินาที ไม่ต้อง fetch ทุกครั้ง
+const licenseCache = new Map();
+
+async function checkGuildLicenseCached(guildId) {
+    const cached = licenseCache.get(guildId);
+    if (cached && Date.now() < cached.expireAt) return cached.result;
+    const result = await checkGuildLicense(guildId);
+    licenseCache.set(guildId, { result, expireAt: Date.now() + 60000 });
+    return result;
+}
+
+async function requireLicense(interaction) {
+    const result = await checkGuildLicenseCached(interaction.guildId);
+    if (!result.ok) {
+        const msg = { content: "❌ Server นี้ไม่มี License หรือ License หมดอายุแล้ว กรุณาติดต่อ Owner" };
+        if (interaction.deferred || interaction.replied) {
+            await interaction.editReply(msg);
+        } else {
+            await interaction.reply({ ...msg, flags: MessageFlags.Ephemeral });
+        }
+        return false;
+    }
+    return true;
+}
+
+async function ownerPost(path, body) {
+    const res = await fetch(`${SERVER_URL}${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-owner-secret": OWNER_SECRET },
+        body: JSON.stringify(body)
+    });
+    return res.json();
+}
+async function ownerDelete(path) {
+    const res = await fetch(`${SERVER_URL}${path}`, { method: "DELETE", headers: { "x-owner-secret": OWNER_SECRET } });
+    return res.json();
+}
+
+function timeText(redeemedAt, duration) {
+    if (duration === -1) return "♾️ ถาวร";
+    if (!redeemedAt || redeemedAt === 0) return "⏳ ยังไม่ได้ใช้";
+    const remaining = (redeemedAt + duration) - Math.floor(Date.now() / 1000);
+    if (remaining <= 0) return "❌ หมดอายุแล้ว";
+    return `${Math.floor(remaining/86400)}d ${Math.floor((remaining%86400)/3600)}h ${Math.floor((remaining%3600)/60)}m`;
+}
+
+function licenseTimeText(expiresAt) {
+    if (expiresAt === -1) return "♾️ ถาวร";
+    const remaining = expiresAt - Math.floor(Date.now() / 1000);
+    if (remaining <= 0) return "❌ หมดอายุแล้ว";
+    return `${Math.floor(remaining/86400)}d ${Math.floor((remaining%86400)/3600)}h ${Math.floor((remaining%3600)/60)}m`;
+}
+
+function getMainControlRow() {
+    return new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId("get_script").setLabel("🎮 Get Script").setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId("redeem_key").setLabel("🔑 Redeem Key").setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId("reset_hwid").setLabel("🔄 Reset HWID").setStyle(ButtonStyle.Danger),
+        new ButtonBuilder().setCustomId("key_state").setLabel("📊 State").setStyle(ButtonStyle.Secondary)
+    );
+}
+
+const commands = [
+    new SlashCommandBuilder().setName("admin_role").setDescription("เลือกยศแอดมิน").addRoleOption(o => o.setName("role").setDescription("ยศ").setRequired(true)),
+    new SlashCommandBuilder().setName("generate_key").setDescription("สร้างคีย์").addIntegerOption(o => o.setName("days").setDescription("วัน (0=ถาวร)").setRequired(true)).addIntegerOption(o => o.setName("amount").setDescription("จำนวน").setRequired(false)).addStringOption(o => o.setName("file").setDescription("ผูกกับไฟล์ (ไม่ระบุ = ใช้ได้ทุกไฟล์)").setRequired(false)),
+    new SlashCommandBuilder().setName("deletekey").setDescription("ลบคีย์").addStringOption(o => o.setName("key_name").setDescription("คีย์").setRequired(true)),
+    new SlashCommandBuilder().setName("keyinfo").setDescription("ดูข้อมูลคีย์").addStringOption(o => o.setName("key_name").setDescription("คีย์").setRequired(true)),
+    new SlashCommandBuilder().setName("updatefile").setDescription("อัพโหลดสคริปต์").addStringOption(o => o.setName("name").setDescription("ชื่อ").setRequired(true)).addAttachmentOption(o => o.setName("file").setDescription(".lua/.txt").setRequired(true)),
+    new SlashCommandBuilder().setName("deletefile").setDescription("ลบสคริปต์").addStringOption(o => o.setName("name").setDescription("ชื่อ").setRequired(true)),
+    new SlashCommandBuilder().setName("listscripts").setDescription("รายชื่อสคริปต์"),
+    new SlashCommandBuilder().setName("dashboard").setDescription("ภาพรวม"),
+    new SlashCommandBuilder().setName("setup").setDescription("ตั้งค่าแผง").addStringOption(o => o.setName("project_name").setDescription("ชื่อโปรเจกต์").setRequired(true)),
+    new SlashCommandBuilder().setName("sethwidresettime").setDescription("ตั้ง Cooldown HWID").addIntegerOption(o => o.setName("hours").setDescription("ชั่วโมง").setRequired(true)),
+    new SlashCommandBuilder().setName("addlicense").setDescription("[Owner] เพิ่ม License ให้ Guild").addStringOption(o => o.setName("guild_id").setDescription("Guild ID").setRequired(true)).addIntegerOption(o => o.setName("days").setDescription("วัน (0=ถาวร)").setRequired(true)).addStringOption(o => o.setName("note").setDescription("โน้ต").setRequired(false)),
+    new SlashCommandBuilder().setName("renewlicense").setDescription("[Owner] ต่ออายุ License").addStringOption(o => o.setName("guild_id").setDescription("Guild ID").setRequired(true)).addIntegerOption(o => o.setName("days").setDescription("วัน").setRequired(true)),
+    new SlashCommandBuilder().setName("deletelicense").setDescription("[Owner] ลบ License").addStringOption(o => o.setName("guild_id").setDescription("Guild ID").setRequired(true)),
+    new SlashCommandBuilder().setName("licenseinfo").setDescription("ดูสถานะ License ของ Server นี้"),
+].map(c => c.toJSON());
+
+const rest = new REST({ version: "10" }).setToken(TOKEN);
 
 client.once("ready", async () => {
     await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-    console.log(`✅ Bot ready: ${client.user.tag}`);
+    console.log(`✅ Logged in as ${client.user.tag}`);
+    const cfg = await serverGet("/config").catch(() => null);
+    if (cfg?.config) {
+        // restore per-guild configs
+        if (cfg.config.guildConfigs) {
+            for (const [gid, gcfg] of Object.entries(cfg.config.guildConfigs)) {
+                guildConfigs[gid] = gcfg;
+            }
+        }
+        console.log(`✅ Config restored (${Object.keys(guildConfigs).length} guilds)`);
+    }
+    setInterval(() => fetch(`${SERVER_URL}/ping`).catch(() => {}), 10 * 60 * 1000);
+    // pre-warm license cache for all known guilds
+    try {
+        const guilds = client.guilds.cache;
+        for (const [gid] of guilds) {
+            checkGuildLicense(gid).then(r => licenseCache.set(gid, { result: r, expireAt: Date.now() + 60000 })).catch(() => {});
+        }
+    } catch {}
 });
 
 client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
+  try {
+    if (interaction.isChatInputCommand()) {
+        const { commandName } = interaction;
 
-    const { commandName } = interaction;
+        if (!LICENSE_EXEMPT_COMMANDS.has(commandName)) {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            if (!await requireLicense(interaction)) return;
+        }
 
-    if (commandName === "generate_key") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+        if (commandName === "admin_role") {
+            if (!interaction.deferred) await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const role = interaction.options.getRole("role");
+            const cfg = getGuildConfig(interaction.guildId);
+            cfg.adminRoleId = role.id;
+            await serverPost("/config", { guildConfigs });
+            return interaction.editReply({ content: `✅ ตั้งยศแอดมินเป็น ${role}` });
+        }
 
-        const tier = interaction.options.getString("tier");
-        const days = interaction.options.getInteger("days");
+        if (commandName === "sethwidresettime") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const cfg = getGuildConfig(interaction.guildId);
+            cfg.hwidResetCooldownHours = interaction.options.getInteger("hours");
+            await serverPost("/config", { guildConfigs });
+            return interaction.editReply({ content: `✅ HWID Cooldown = **${cfg.hwidResetCooldownHours} ชั่วโมง**` });
+        }
 
-        const result = await serverPost("/key/generate", { tier, days });
-        if (!result.ok) return interaction.editReply({ content: "❌ เกิดข้อผิดพลาด" });
+        if (commandName === "generate_key") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const days = interaction.options.getInteger("days");
+            const amount = Math.min(interaction.options.getInteger("amount") ?? 1, 50);
+            const file = interaction.options.getString("file") || null;
+            const duration = days === 0 ? -1 : days * 86400;
+            const result = await serverPost("/keys/generate", { duration, amount, file });
+            if (!result.ok) return interaction.editReply({ content: "❌ สร้างคีย์ไม่สำเร็จ" });
+            const chunks = [];
+            for (let i = 0; i < result.keys.length; i += 10) chunks.push(result.keys.slice(i, i + 10));
+            const embed = new EmbedBuilder().setTitle("🔑 Key Generated").setColor(0x2ecc71)
+                .addFields(
+                    { name: "📦 จำนวน", value: String(amount), inline: true },
+                    { name: "⏰ Duration", value: days === 0 ? "♾️ ถาวร" : `${days} วัน`, inline: true },
+                    { name: "🎮 ไฟล์", value: file || "ทุกไฟล์", inline: true }
+                );
+            chunks.forEach((chunk, idx) => embed.addFields({ name: idx === 0 ? "🗝️ Keys" : "​", value: chunk.map(k => `\`${k}\``).join("\n") }));
+            return interaction.editReply({ embeds: [embed] });
+        }
 
-        return interaction.editReply({ embeds: [new EmbedBuilder().setTitle("✅ Key Generated").setColor(0x00ff88)
-            .addFields({ name: "🔑 Key", value: `\`${result.key}\``, inline: false },
-                { name: "📊 Tier", value: tier, inline: true },
-                { name: "⏰ Duration", value: days === 0 ? "♾️ ถาวร" : `${days} วัน`, inline: true })] });
+        if (commandName === "deletekey") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const result = await serverDelete(`/keys/${interaction.options.getString("key_name")}`);
+            return interaction.editReply({ content: result.ok ? `🗑️ ลบคีย์เรียบร้อย` : `❌ ไม่พบคีย์` });
+        }
+
+        if (commandName === "keyinfo") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const result = await serverGet(`/keys/${interaction.options.getString("key_name")}`);
+            if (!result.ok) return interaction.editReply({ content: `❌ ไม่พบคีย์` });
+            const d = result.data;
+            return interaction.editReply({ embeds: [new EmbedBuilder().setTitle("🔍 Key Info").setColor(0xe67e22).addFields(
+                { name: "🗝️ Key", value: `\`${result.key}\``, inline: false },
+                { name: "✅ Active", value: String(d.active), inline: true },
+                { name: "❌ Expired", value: String(d.expired), inline: true },
+                { name: "⏰ Time Left", value: timeText(d.redeemedAt, d.duration), inline: true },
+                { name: "▶️ Executions", value: String(d.executionCount || 0), inline: true },
+                { name: "👤 Used By", value: d.usedBy ? `<@${d.usedBy}>` : "ยังไม่มี", inline: true },
+                { name: "🖥️ HWID", value: d.hwid || "ยังไม่มี", inline: false }
+            )] });
+        }
+
+        if (commandName === "updatefile") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const name = interaction.options.getString("name");
+            const attachment = interaction.options.getAttachment("file");
+            if (!attachment.name.endsWith(".lua") && !attachment.name.endsWith(".txt"))
+                return interaction.editReply({ content: "❌ ต้องเป็น .lua หรือ .txt" });
+            let scriptContent;
+            try { const r = await fetch(attachment.url); scriptContent = await r.text(); }
+            catch { return interaction.editReply({ content: "❌ ดาวน์โหลดไฟล์ไม่ได้" }); }
+            await interaction.editReply({ content: "⏳ กำลัง Obfuscate..." });
+            const result = await obfuscate(scriptContent, name);
+            if (!result.success) return interaction.editReply({ content: `❌ ล้มเหลว: **${result.stage}**` });
+            setGuildScript(interaction.guildId, name, result.url);
+            await serverPost("/config", { guildConfigs });
+            return interaction.editReply({ content: `✅ อัพโหลดสำเร็จ\n**ชื่อ**: \`${name}\`\n**URL**: ${result.url}` });
+        }
+
+        if (commandName === "deletefile") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const name = interaction.options.getString("name");
+            const guildScripts = getGuildScripts(interaction.guildId);
+            if (!guildScripts[name]) return interaction.editReply({ content: `❌ ไม่พบสคริปต์ชื่อ \`${name}\`` });
+            deleteGuildScript(interaction.guildId, name);
+            await serverPost("/config", { guildConfigs });
+            return interaction.editReply({ content: `🗑️ ลบสคริปต์ \`${name}\` เรียบร้อย` });
+        }
+
+        if (commandName === "listscripts") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const names = Object.keys(getGuildScripts(interaction.guildId));
+            if (names.length === 0) return interaction.editReply({ content: "📭 ไม่มีสคริปต์" });
+            return interaction.editReply({ embeds: [new EmbedBuilder().setTitle("🎮 Scripts").setColor(0x5865F2).setDescription(names.map((n, i) => `**${i + 1}.** \`${n}\``).join("\n"))] });
+        }
+
+        if (commandName === "dashboard") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const cfg = getGuildConfig(interaction.guildId);
+            const result = await serverGet("/keys");
+            const values = Object.values(result.keys || {});
+            // กรองเฉพาะ key ของ guild นี้
+            const guildValues = values.filter(v => !v.guildId || v.guildId === interaction.guildId);
+            const totalExec = guildValues.reduce((a, v) => a + (v.executionCount || 0), 0);
+            const expiredCount = guildValues.filter(v => v.expired).length;
+            const buyerCount = guildValues.filter(v => v.usedBy && v.usedBy !== "").length;
+            const guildScripts = getGuildScripts(interaction.guildId);
+            const scriptList = Object.keys(guildScripts);
+            const loaderScript = scriptList.length > 0
+                ? `loadstring(game:HttpGet('${guildScripts[scriptList[0]]}'))()`
+                : "ยังไม่มีสคริปต์";
+            const embed = new EmbedBuilder()
+                .setTitle(`${cfg.projectName} Dashboard - Project Overview`)
+                .setColor(0x5865F2)
+                .addFields(
+                    { name: "🟦 Project Name", value: cfg.projectName, inline: false },
+                    { name: "🟧 All Execute Count", value: String(totalExec), inline: false },
+                    { name: "🟧 Buyer", value: String(buyerCount), inline: false },
+                    { name: "🟨 Expired", value: expiredCount > 0 ? `⚠️ ${expiredCount} keys expired` : "✅ No expired keys", inline: false },
+                    { name: "🟦 Buyer Role", value: cfg.adminRoleId ? `<@&${cfg.adminRoleId}>` : "@unknown-role", inline: false },
+                    { name: "🔗 Loader", value: `\`\`\`lua\n${loaderScript}\n\`\`\``, inline: false }
+                )
+                .setFooter({ text: `Dashboard Whitelist System | Made by ${cfg.projectName} • Today` });
+            const row1 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId("dash_genkey").setLabel("Generate Key").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId("dash_removekey").setLabel("Remove Key").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId("dash_searchkey").setLabel("Search Key").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId("dash_hwidcooldown").setLabel("HWID Cooldown").setStyle(ButtonStyle.Secondary)
+            );
+            const row2 = new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId("dash_loader").setLabel("Loader").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId("dash_accessrole").setLabel("Access Role").setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder().setCustomId("dash_renewtime").setLabel("Renew Time").setStyle(ButtonStyle.Primary),
+                new ButtonBuilder().setCustomId("dash_unusedkeys").setLabel("Get Unused Keys").setStyle(ButtonStyle.Secondary)
+            );
+            return interaction.editReply({ embeds: [embed], components: [row1, row2] });
+        }
+
+        if (commandName === "setup") {
+            if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const cfg = getGuildConfig(interaction.guildId);
+            cfg.projectName = interaction.options.getString("project_name");
+            cfg.setupUser = interaction.member.displayName;
+            await serverPost("/config", { guildConfigs });
+            await interaction.channel.send({
+                embeds: [new EmbedBuilder().setTitle(`${cfg.projectName} Control Panel`).setDescription("ยินดีต้อนรับ! เลือกรายการด้านล่าง").setColor(0x5865F2).setFooter({ text: `Setup by ${cfg.setupUser}` })],
+                components: [getMainControlRow()]
+            });
+            return interaction.editReply({ content: "✅ ตั้งค่าแผงเรียบร้อย!" });
+        }
     }
 
-    if (commandName === "deletekey") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+    if (interaction.isButton()) {
+        // ปุ่มที่ต้อง showModal ห้าม defer ก่อน
+        const modalButtons = new Set(["dash_searchkey", "dash_hwidcooldown", "dash_accessrole", "redeem_key"]);
 
-        const keyId = interaction.options.getString("key_id");
-        const result = await serverDelete(`/key/${keyId}`);
+        if (!modalButtons.has(interaction.customId)) {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+        }
 
-        return interaction.editReply({ content: result.ok ? "🗑️ ลบ Key แล้ว" : "❌ ไม่พบ Key" });
+        // เช็ค license หลัง defer แล้ว
+        const licResult = await checkGuildLicenseCached(interaction.guildId);
+        if (!licResult.ok) {
+            const msg = { content: "❌ Server นี้ไม่มี License หรือ License หมดอายุแล้ว" };
+            if (interaction.deferred) return interaction.editReply(msg);
+            return interaction.reply({ ...msg, flags: MessageFlags.Ephemeral });
+        }
+
+        if (interaction.customId === "dash_genkey") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            return interaction.editReply({ content: "ใช้คำสั่ง /generate_key ครับ ตัวอย่าง: /generate_key days:1 amount:1" });
+        }
+
+        if (interaction.customId === "dash_removekey") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            return interaction.editReply({ content: "ใช้คำสั่ง `/deletekey key_name:xxx` ครับ" });
+        }
+
+        if (interaction.customId === "dash_searchkey") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.reply({ content: "❌ คุณไม่มีสิทธิ์", flags: MessageFlags.Ephemeral });
+            return interaction.showModal(new ModalBuilder().setCustomId("search_key_modal").setTitle("Search Key")
+                .addComponents(new ActionRowBuilder().addComponents(
+                    new TextInputBuilder().setCustomId("search_input").setLabel("คีย์ที่ต้องการค้นหา").setStyle(TextInputStyle.Short).setRequired(true)
+                )));
+        }
+
+        if (interaction.customId === "dash_hwidcooldown") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.reply({ content: "❌ คุณไม่มีสิทธิ์", flags: MessageFlags.Ephemeral });
+            return interaction.showModal(new ModalBuilder().setCustomId("hwid_cooldown_modal").setTitle("Set HWID Cooldown")
+                .addComponents(new ActionRowBuilder().addComponents(
+                    new TextInputBuilder().setCustomId("cooldown_input").setLabel("จำนวนชั่วโมง").setStyle(TextInputStyle.Short).setPlaceholder("เช่น 24").setRequired(true)
+                )));
+        }
+
+        if (interaction.customId === "dash_loader") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const guildScripts = getGuildScripts(interaction.guildId);
+            const scriptList = Object.keys(guildScripts);
+            if (scriptList.length === 0) return interaction.editReply({ content: "❌ ยังไม่มีสคริปต์" });
+            const loaderLines = scriptList.map(n => `loadstring(game:HttpGet('${guildScripts[n]}'))()`).join("\n");
+            return interaction.editReply({ content: `**Loader:**\n\`\`\`lua\n${loaderLines}\n\`\`\`` });
+        }
+
+        if (interaction.customId === "dash_accessrole") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.reply({ content: "❌ คุณไม่มีสิทธิ์", flags: MessageFlags.Ephemeral });
+            return interaction.showModal(new ModalBuilder().setCustomId("access_role_modal").setTitle("Set Access Role")
+                .addComponents(new ActionRowBuilder().addComponents(
+                    new TextInputBuilder().setCustomId("role_input").setLabel("Role ID").setStyle(TextInputStyle.Short).setRequired(true)
+                )));
+        }
+
+        if (interaction.customId === "dash_renewtime") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            return interaction.editReply({ content: "ใช้คำสั่ง `/generate_key` เพื่อสร้างคีย์ใหม่ให้ผู้ใช้ครับ" });
+        }
+
+        if (interaction.customId === "dash_unusedkeys") {
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const result = await serverGet("/keys");
+            const unused = Object.entries(result.keys || {}).filter(([, v]) => !v.usedBy || v.usedBy === "").map(([k]) => k);
+            if (unused.length === 0) return interaction.editReply({ content: "📭 ไม่มีคีย์ที่ยังไม่ได้ใช้" });
+            const chunks = [];
+            for (let i = 0; i < unused.length; i += 10) chunks.push(unused.slice(i, i + 10));
+            const embed = new EmbedBuilder().setTitle("🗝️ Unused Keys").setColor(0x2ecc71);
+            chunks.forEach((chunk, idx) => embed.addFields({ name: idx === 0 ? `จำนวน ${unused.length} คีย์` : "​", value: chunk.map(k => "`" + k + "`").join("\n") }));
+            return interaction.editReply({ embeds: [embed] });
+        }
+
+        if (interaction.customId === "get_script") {
+            const guildScripts = getGuildScripts(interaction.guildId);
+            if (Object.keys(guildScripts).length === 0) return interaction.editReply({ content: "❌ ยังไม่มีสคริปต์" });
+            // fetch key ของ user ใน guild นี้ (server fallback หลายชั้น)
+            const _cacheKey = interaction.user.id + ":" + interaction.guildId;
+            let cached = getCachedKey(_cacheKey);
+            if (!cached) {
+                const r = await serverGet(`/keys/user/${interaction.user.id}?guildId=${interaction.guildId}`);
+                if (!r.ok) return interaction.editReply({ content: "❌ กรุณา Redeem Key ก่อน" });
+                setCachedKey(_cacheKey, r.key, r.data);
+                cached = getCachedKey(_cacheKey);
+            }
+            if (!cached) return interaction.editReply({ content: "❌ กรุณา Redeem Key ก่อน" });
+            if (cached.data.expired) return interaction.editReply({ content: "❌ คีย์หมดอายุแล้ว" });
+            // กรอง script ตาม file ที่ key ผูกไว้
+            const keyFile = cached.data.file || null;
+            const allScriptNames = Object.keys(guildScripts);
+            const scriptNames = keyFile
+                ? allScriptNames.filter(n => n === keyFile)
+                : allScriptNames;
+            if (scriptNames.length === 0) return interaction.editReply({ content: `❌ ไม่มีสคริปต์ที่ใช้ได้${keyFile ? ` (คีย์นี้ผูกกับไฟล์ \`${keyFile}\`)` : ""}` });
+            if (scriptNames.length === 1) {
+                const script = `getgenv().key = "${cached.key}"\nloadstring(game:HttpGet('${guildScripts[scriptNames[0]]}'))()`;
+                return interaction.editReply({ content: `**🎮 ${scriptNames[0]}**${keyFile ? ` *(key สำหรับไฟล์นี้)*` : ""}\n\`\`\`lua\n${script}\n\`\`\`\n${script}\n-# 📱 MOBILE: กดค้างที่ข้อความด้านบนเพื่อ Copy | 🍎 IPHONE: ข้อความด้านบนคือ Script` });
+            }
+            const rows = [];
+            let row = new ActionRowBuilder();
+            scriptNames.forEach((name, idx) => {
+                if (idx > 0 && idx % 5 === 0) { rows.push(row); row = new ActionRowBuilder(); }
+                row.addComponents(new ButtonBuilder().setCustomId(`script_btn_${name}`).setLabel(name).setStyle(ButtonStyle.Secondary));
+            });
+            rows.push(row);
+            if (rows.length > 5) rows.length = 5;
+            return interaction.editReply({ content: "🎮 เลือกสคริปต์:", components: rows });
+        }
+
+        if (interaction.customId.startsWith("script_btn_")) {
+            const scriptName = interaction.customId.slice("script_btn_".length);
+            const url = getGuildScripts(interaction.guildId)[scriptName];
+            if (!url) return interaction.editReply({ content: "❌ ไม่พบสคริปต์" });
+            const _cacheKey2 = interaction.user.id + ":" + interaction.guildId;
+            let cached = getCachedKey(_cacheKey2);
+            if (!cached) {
+                const r = await serverGet(`/keys/user/${interaction.user.id}?guildId=${interaction.guildId}`);
+                if (!r.ok) return interaction.editReply({ content: "❌ กรุณา Redeem Key ก่อน" });
+                setCachedKey(_cacheKey2, r.key, r.data);
+                cached = getCachedKey(_cacheKey2);
+            }
+            if (!cached) return interaction.editReply({ content: "❌ กรุณา Redeem Key ก่อน" });
+            const keyFile = cached.data.file || null;
+            if (keyFile && keyFile !== scriptName) return interaction.editReply({ content: `❌ คีย์นี้ใช้ได้แค่ไฟล์ \`${keyFile}\` เท่านั้น` });
+            const script = `getgenv().key = "${cached.key}"\nloadstring(game:HttpGet('${url}'))()`;
+            return interaction.editReply({ content: `**🎮 ${scriptName}**\n\`\`\`lua\n${script}\n\`\`\`\n${script}\n-# 📱 MOBILE: กดค้างที่ข้อความด้านบนเพื่อ Copy | 🍎 IPHONE: ข้อความด้านบนคือ Script` });
+        }
+
+        if (interaction.customId === "redeem_key") {
+            return interaction.showModal(new ModalBuilder().setCustomId("redeem_modal").setTitle("Redeem Key")
+                .addComponents(new ActionRowBuilder().addComponents(
+                    new TextInputBuilder().setCustomId("key_input").setLabel("คีย์ของคุณ").setStyle(TextInputStyle.Short).setMinLength(32).setMaxLength(32).setRequired(true)
+                )));
+        }
+
+        if (interaction.customId === "reset_hwid") {
+            const _gCfg = getGuildConfig(interaction.guildId);
+            const hwidResetCooldownHours = _gCfg.hwidResetCooldownHours;
+            if (hwidResetCooldownHours === null) return interaction.editReply({ content: "❌ แอดมินยังไม่ตั้งค่า Cooldown" });
+            let cached = getCachedKey(interaction.user.id + ":" + (interaction.guildId || ""));
+            if (!cached) {
+                const result = await serverGet(`/keys/user/${interaction.user.id}?guildId=${interaction.guildId}`);
+                if (!result.ok) return interaction.editReply({ content: "❌ ยังไม่ได้ Redeem Key" });
+                setCachedKey(interaction.user.id + ":" + interaction.guildId, result.key, result.data);
+                cached = getCachedKey(interaction.user.id + ":" + interaction.guildId);
+            }
+            if (cached.data.expired) return interaction.editReply({ content: "❌ คีย์หมดอายุแล้ว" });
+            const nowSec = Math.floor(Date.now() / 1000);
+            const lastReset = cached.data.lastHwidReset || 0;
+            const cooldownSec = hwidResetCooldownHours * 3600;
+            if (lastReset > 0 && (nowSec - lastReset) < cooldownSec) {
+                const remaining = cooldownSec - (nowSec - lastReset);
+                return interaction.editReply({ content: `⏳ รีเซ็ตได้อีกใน **${Math.floor(remaining/3600)} ชม. ${Math.floor((remaining%3600)/60)} นาที**` });
+            }
+            await serverPost(`/keys/${cached.key}/reset-hwid`, {});
+            clearCachedKey(interaction.user.id + ":" + (interaction.guildId || ""));
+            return interaction.editReply({ content: "✅ รีเซ็ต HWID สำเร็จ!" });
+        }
+
+        if (interaction.customId === "key_state") {
+            const _stCacheKey = interaction.user.id + ":" + interaction.guildId;
+            let cached = getCachedKey(_stCacheKey);
+            if (!cached) {
+                const result = await serverGet(`/keys/user/${interaction.user.id}?guildId=${interaction.guildId}`);
+                if (!result.ok) return interaction.editReply({ content: "❌ ยังไม่ได้ Redeem Key" });
+                setCachedKey(_stCacheKey, result.key, result.data);
+                cached = getCachedKey(_stCacheKey);
+            }
+            const d = cached.data;
+            // เช็คว่า key นี้ถูก redeem ใน guild นี้ไหม
+            if (d.guildId && d.guildId !== interaction.guildId) return interaction.editReply({ content: "❌ คีย์นี้ถูกใช้ใน Server อื่น" });
+            return interaction.editReply({ embeds: [new EmbedBuilder().setTitle("📊 Key State").setColor(0x3498db).addFields(
+                { name: "🗝️ Key", value: `\`${cached.key}\``, inline: false },
+                { name: "✅ Active", value: String(d.active), inline: true },
+                { name: "❌ Expired", value: String(d.expired), inline: true },
+                { name: "⏰ Time Left", value: timeText(d.redeemedAt, d.duration), inline: true },
+                { name: "▶️ Executions", value: String(d.executionCount || 0), inline: true },
+                { name: "🖥️ HWID", value: d.hwid || "ยังไม่มี", inline: false },
+                { name: "🏠 Guild", value: d.guildId || "ไม่ระบุ", inline: false }
+            )] });
+        }
     }
 
-    if (commandName === "dashboard") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+    if (interaction.isModalSubmit()) {
+        const licResult = await checkGuildLicenseCached(interaction.guildId);
+        if (!licResult.ok) {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            return interaction.editReply({ content: "❌ Server นี้ไม่มี License หรือ License หมดอายุแล้ว" });
+        }
 
-        const keys = await serverGet("/keys");
-        const scripts = await serverGet("/scripts");
-        const totalKeys = Object.keys(keys.keys || {}).length;
+        if (interaction.customId === "search_key_modal") {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const keyName = interaction.fields.getTextInputValue("search_input").trim();
+            const result = await serverGet(`/keys/${keyName}`);
+            if (!result.ok) return interaction.editReply({ content: `❌ ไม่พบคีย์` });
+            const d = result.data;
+            return interaction.editReply({ embeds: [new EmbedBuilder().setTitle("🔍 Key Info").setColor(0xe67e22).addFields(
+                { name: "🗝️ Key", value: `\`${keyName}\``, inline: false },
+                { name: "✅ Active", value: String(d.active), inline: true },
+                { name: "❌ Expired", value: String(d.expired), inline: true },
+                { name: "⏰ Time Left", value: timeText(d.redeemedAt, d.duration), inline: true },
+                { name: "▶️ Executions", value: String(d.executionCount || 0), inline: true },
+                { name: "👤 Used By", value: d.usedBy ? `<@${d.usedBy}>` : "ยังไม่มี", inline: true },
+                { name: "🖥️ HWID", value: d.hwid || "ยังไม่มี", inline: false }
+            )] });
+        }
 
-        return interaction.editReply({ embeds: [new EmbedBuilder().setTitle("📊 Dashboard").setColor(0x5865F2)
-            .addFields({ name: "🔑 Total Keys", value: String(totalKeys), inline: true },
-                { name: "📝 Scripts", value: `NORMAL: ${scripts.scripts.NORMAL ? "✅" : "❌"} | ADMIN: ${scripts.scripts.ADMIN ? "✅" : "❌"} | ALLMAP: ${scripts.scripts.ALLMAP ? "✅" : "❌"}`, inline: false },
-                { name: "👥 Buyer Role", value: config.buyerRoleId ? `<@&${config.buyerRoleId}>` : "ไม่มี", inline: false },
-                { name: "⏱️ Reset HWID Cooldown", value: `${config.resetHwidCooldown} ชั่วโมง`, inline: false })] });
+        if (interaction.customId === "hwid_cooldown_modal") {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const hours = parseInt(interaction.fields.getTextInputValue("cooldown_input").trim());
+            if (isNaN(hours)) return interaction.editReply({ content: "❌ กรุณาใส่ตัวเลข" });
+            const cfg = getGuildConfig(interaction.guildId);
+            cfg.hwidResetCooldownHours = hours;
+            await serverPost("/config", { guildConfigs });
+            return interaction.editReply({ content: `✅ ตั้ง HWID Cooldown = **${hours} ชั่วโมง**` });
+        }
+
+        if (interaction.customId === "access_role_modal") {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            if (!isAdmin(interaction.member, interaction.guildId)) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+            const roleId = interaction.fields.getTextInputValue("role_input").trim();
+            const cfg = getGuildConfig(interaction.guildId);
+            cfg.adminRoleId = roleId;
+            await serverPost("/config", { guildConfigs });
+            return interaction.editReply({ content: `✅ ตั้ง Access Role = <@&${roleId}>` });
+        }
+
+        if (interaction.customId === "redeem_modal") {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            const keyName = interaction.fields.getTextInputValue("key_input").trim();
+            const result = await serverPost(`/keys/${keyName}/redeem`, { userId: interaction.user.id, guildId: interaction.guildId });
+            if (!result.ok) {
+                const msgs = { "Key ไม่ถูกต้อง": "❌ คีย์ไม่ถูกต้อง", "Key หมดอายุแล้ว": "❌ คีย์หมดอายุแล้ว", "Key used by someone else": "❌ คีย์ถูกใช้โดยคนอื่น", "Already redeemed": "⚠️ คุณใช้คีย์นี้อยู่แล้ว", "Key used in another guild": "❌ คีย์นี้ถูกใช้ใน Server อื่นแล้ว" };
+                return interaction.editReply({ content: msgs[result.reason] || "❌ เกิดข้อผิดพลาด" });
+            }
+            clearCachedKey(interaction.user.id + ":" + interaction.guildId);
+            return interaction.editReply({ content: `✅ Redeem สำเร็จ!\n**Duration:** ${result.duration === -1 ? "♾️ ถาวร" : `${Math.floor(result.duration/86400)} วัน`}` });
+        }
     }
+  } catch (err) {
+    console.error("[interactionCreate error]", err);
+    try {
+      const errMsg = { content: "❌ เกิดข้อผิดพลาด กรุณาลองใหม่" };
+      if (interaction.deferred || interaction.replied) await interaction.editReply(errMsg);
+      else await interaction.reply({ ...errMsg, flags: MessageFlags.Ephemeral });
+    } catch {}
+  }
+});
 
-    if (commandName === "setup") {
-        await interaction.reply({ embeds: [new EmbedBuilder().setTitle("🎮 RainX Control Panel").setColor(0x5865F2)
-            .setDescription("ยินดีต้อนรับ เลือกรายการด้านล่าง")],
-            components: [new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId("get_script").setLabel("🎮 Get Script").setStyle(ButtonStyle.Primary),
-                new ButtonBuilder().setCustomId("redeem_key").setLabel("🔑 Redeem Key").setStyle(ButtonStyle.Success),
-                new ButtonBuilder().setCustomId("reset_ip").setLabel("🌐 Reset IP").setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId("reset_hwid").setLabel("🔄 Reset HWID").setStyle(ButtonStyle.Danger),
-                new ButtonBuilder().setCustomId("state").setLabel("📊 State").setStyle(ButtonStyle.Secondary)
+// ====== LICENSE COMMAND HANDLERS (owner-only, ไม่ต้องเช็ค license) ======
+client.on("interactionCreate", async (licInteraction) => {
+  try {
+    if (!licInteraction.isChatInputCommand()) return;
+    const cmd = licInteraction.commandName;
+
+    if (cmd === "addlicense") {
+        await licInteraction.deferReply({ flags: MessageFlags.Ephemeral });
+        if (licInteraction.user.id !== OWNER_ID) return licInteraction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+        const guildId = licInteraction.options.getString("guild_id");
+        const days = licInteraction.options.getInteger("days");
+        const note = licInteraction.options.getString("note") || "";
+        const result = await ownerPost("/guild/license", { guildId, days, note });
+        if (!result.ok) return licInteraction.editReply({ content: "❌ เกิดข้อผิดพลาด" });
+        return licInteraction.editReply({ embeds: [new EmbedBuilder().setTitle("✅ License Added").setColor(0x00ff88)
+            .addFields(
+                { name: "🏠 Guild ID", value: guildId, inline: false },
+                { name: "⏰ Duration", value: days === 0 ? "♾️ ถาวร" : `${days} วัน`, inline: true },
+                { name: "📝 Note", value: note || "-", inline: true }
             )] });
     }
 
-    if (commandName === "updatefile") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
-
-        const tier = interaction.options.getString("tier");
-        const file = interaction.options.getAttachment("file");
-
-        if (!file.name.endsWith(".lua") && !file.name.endsWith(".txt")) return interaction.editReply({ content: "❌ ต้องเป็น .lua หรือ .txt" });
-
-        let content;
-        try {
-            const r = await fetch(file.url);
-            content = await r.text();
-        } catch {
-            return interaction.editReply({ content: "❌ ดาวน์โหลดไฟล์ไม่ได้" });
-        }
-
-        // 1. Upload raw code ไป Pastefy
-        const rawUrl = await uploadToPastefy(content);
-        if (!rawUrl) return interaction.editReply({ content: "❌ Upload ไป Pastefy ไม่ได้" });
-
-        // 2. ต่อ CLIENT_LOADER + raw URL
-        const loaderCode = CLIENT_LOADER + `\n\nloadstring(game:HttpGet("${rawUrl}"))()`;
-
-        // 3. Obf
-        const obfCode = await obfuscate(loaderCode);
-        if (!obfCode) return interaction.editReply({ content: "❌ Obfuscate ไม่ได้" });
-
-        // 4. Upload obfed ไป Pastefy
-        const finalUrl = await uploadToPastefy(obfCode);
-        if (!finalUrl) return interaction.editReply({ content: "❌ Upload obfed ไป Pastefy ไม่ได้" });
-
-        // 5. Save ไป server
-        const result = await serverPost("/script/update", { tier, content: finalUrl });
-        if (!result.ok) return interaction.editReply({ content: "❌ เกิดข้อผิดพลาด" });
-
-        // 6. ส่ง DM ให้ owner
-        await sendDmToOwner(new EmbedBuilder().setTitle(`📝 Script Updated - ${tier}`).setColor(0x00ff88)
-            .addFields({ name: "Raw URL", value: rawUrl, inline: false },
-                { name: "Final URL", value: finalUrl, inline: false },
-                { name: "Code Preview", value: `\`\`\`lua\n${content.slice(0, 500)}\n${content.length > 500 ? "..." : ""}\n\`\`\`` }));
-
-        return interaction.editReply({ content: `✅ อัพโหลด ${tier} script สำเร็จ` });
+    if (cmd === "renewlicense") {
+        await licInteraction.deferReply({ flags: MessageFlags.Ephemeral });
+        if (licInteraction.user.id !== OWNER_ID) return licInteraction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+        const guildId = licInteraction.options.getString("guild_id");
+        const days = licInteraction.options.getInteger("days");
+        const result = await ownerPost("/guild/renew", { guildId, days });
+        if (!result.ok) return licInteraction.editReply({ content: "❌ ไม่พบ Guild หรือเกิดข้อผิดพลาด" });
+        return licInteraction.editReply({ content: `✅ ต่ออายุแล้ว **${days} วัน**\nหมดอายุ: ${licenseTimeText(result.expiresAt)}` });
     }
 
-    if (commandName === "deletefile") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
-
-        const tier = interaction.options.getString("tier");
-        const result = await serverPost("/script/update", { tier, content: "" });
-
-        return interaction.editReply({ content: result.ok ? `🗑️ ลบ ${tier} script แล้ว` : "❌ เกิดข้อผิดพลาด" });
+    if (cmd === "deletelicense") {
+        await licInteraction.deferReply({ flags: MessageFlags.Ephemeral });
+        if (licInteraction.user.id !== OWNER_ID) return licInteraction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
+        const guildId = licInteraction.options.getString("guild_id");
+        const result = await ownerDelete(`/guild/license/${guildId}`);
+        return licInteraction.editReply({ content: result.ok ? "🗑️ ลบ License แล้ว" : "❌ ไม่พบ Guild" });
     }
 
-    if (commandName === "buyer_role") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
-
-        const role = interaction.options.getRole("role");
-        config.buyerRoleId = role.id;
-
-        return interaction.editReply({ content: `✅ ตั้ง Buyer Role เป็น ${role}` });
-    }
-
-    if (commandName === "settings") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        if (!interaction.member.permissions.has("Administrator")) return interaction.editReply({ content: "❌ คุณไม่มีสิทธิ์" });
-
-        const cooldown = interaction.options.getInteger("resethwid_cooldown");
-        config.resetHwidCooldown = cooldown;
-
-        return interaction.editReply({ content: `✅ ตั้ง Reset HWID Cooldown = ${cooldown} ชั่วโมง` });
-    }
-});
-
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isButton()) return;
-
-    if (interaction.customId === "get_script") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        return interaction.editReply({ content: "🎮 เลือก Tier ที่ต้องการ",
-            components: [new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId("script_NORMAL").setLabel("NORMAL").setStyle(ButtonStyle.Primary),
-                new ButtonBuilder().setCustomId("script_ADMIN").setLabel("ADMIN").setStyle(ButtonStyle.Primary),
-                new ButtonBuilder().setCustomId("script_ALLMAP").setLabel("ALLMAP").setStyle(ButtonStyle.Primary)
+    if (cmd === "licenseinfo") {
+        await licInteraction.deferReply({ flags: MessageFlags.Ephemeral });
+        const result = await checkGuildLicense(licInteraction.guildId);
+        const color = result.ok ? 0x00ff88 : 0xff4444;
+        return licInteraction.editReply({ embeds: [new EmbedBuilder().setTitle("📋 License Info").setColor(color)
+            .addFields(
+                { name: "✅ Status", value: result.ok ? "Active" : "❌ Expired/ไม่มี License", inline: true },
+                { name: "⏰ Time Left", value: result.expiresAt ? licenseTimeText(result.expiresAt) : "ไม่มี", inline: true },
+                { name: "📝 Note", value: result.note || "-", inline: false }
             )] });
     }
-
-    if (interaction.customId.startsWith("script_")) {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const tier = interaction.customId.split("_")[1];
-        
-        // ดึง key จริงของ user คนนี้
-        const keyResult = await serverGet(`/key/user/${interaction.user.id}`);
-        if (!keyResult.ok) return interaction.editReply({ content: "❌ คุณยังไม่ได้ Redeem Key กรุณา Redeem Key ก่อน" });
-        if (keyResult.expired) return interaction.editReply({ content: "❌ Key ของคุณหมดอายุแล้ว" });
-
-        // เช็ค tier hierarchy: ALLMAP >= ADMIN >= NORMAL
-        const tierOrder = { NORMAL: 1, ADMIN: 2, ALLMAP: 3 };
-        if (tierOrder[keyResult.tier] < tierOrder[tier]) {
-            return interaction.editReply({ content: `❌ Key ของคุณเป็น tier **${keyResult.tier}** ไม่สามารถเอา script **${tier}** ได้` });
-        }
-
-        try {
-            const res = await fetch(`${SERVER_URL}/script/${tier}`, { headers: { "x-bot-secret": BOT_SECRET } });
-            const rawUrl = await res.text();
-            return interaction.editReply({ content: `\`\`\`\nlicense_key=${keyResult.key}\nloadstring(game:HttpGet("${rawUrl}"))()\n\`\`\`` });
-        } catch {
-            return interaction.editReply({ content: "❌ ไม่มี Script" });
-        }
-    }
-
-    if (interaction.customId === "redeem_key") {
-        await interaction.showModal(new ModalBuilder().setCustomId("redeem_modal").setTitle("Redeem Key")
-            .addComponents(new ActionRowBuilder().addComponents(
-                new TextInputBuilder().setCustomId("key_input").setLabel("Key").setStyle(TextInputStyle.Short).setRequired(true)
-            )));
-    }
-
-    if (interaction.customId === "reset_ip") {
-        await interaction.showModal(new ModalBuilder().setCustomId("reset_ip_modal").setTitle("Reset IP")
-            .addComponents(new ActionRowBuilder().addComponents(
-                new TextInputBuilder().setCustomId("key_input").setLabel("Key").setStyle(TextInputStyle.Short).setRequired(true)
-            )));
-    }
-
-    if (interaction.customId === "reset_hwid") {
-        await interaction.showModal(new ModalBuilder().setCustomId("reset_hwid_modal").setTitle("Reset HWID")
-            .addComponents(new ActionRowBuilder().addComponents(
-                new TextInputBuilder().setCustomId("key_input").setLabel("Key").setStyle(TextInputStyle.Short).setRequired(true)
-            )));
-    }
-
-    if (interaction.customId === "state") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        return interaction.editReply({ content: "📊 Key State - ติดต่อ owner สำหรับข้อมูลคีย์" });
-    }
-});
-
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isModalSubmit()) return;
-
-    if (interaction.customId === "redeem_modal") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const key = interaction.fields.getTextInputValue("key_input");
-        
-        const result = await serverPost("/verify", { key, hwid: `pending_${interaction.user.id}`, ip: "pending", discordUserId: interaction.user.id });
-        return interaction.editReply({ content: result.ok ? `✅ Redeem สำเร็จ! Tier: ${result.tier}` : "❌ Key ไม่ถูกต้อง" });
-    }
-
-    if (interaction.customId === "reset_ip_modal") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const key = interaction.fields.getTextInputValue("key_input");
-        
-        const result = await serverPost("/reset-ip", { key, newIp: "new_ip_here" });
-        return interaction.editReply({ content: result.ok ? "✅ Reset IP สำเร็จ" : "❌ เกิดข้อผิดพลาด" });
-    }
-
-    if (interaction.customId === "reset_hwid_modal") {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const key = interaction.fields.getTextInputValue("key_input");
-        
-        const result = await serverPost("/reset-hwid", { key, newHwid: "new_hwid_here" });
-        return interaction.editReply({ content: result.ok ? "✅ Reset HWID สำเร็จ" : "❌ เกิดข้อผิดพลาด" });
-    }
+  } catch (err) {
+    console.error("[licenseInteraction error]", err);
+    try {
+      const errMsg = { content: "❌ เกิดข้อผิดพลาด กรุณาลองใหม่" };
+      if (licInteraction.deferred || licInteraction.replied) await licInteraction.editReply(errMsg);
+      else await licInteraction.reply({ ...errMsg, flags: MessageFlags.Ephemeral });
+    } catch {}
+  }
 });
 
 client.login(TOKEN);
-
-// ====== HTTP SERVER (required for Render port binding) ======
-const http = require("http");
-const PORT = process.env.PORT || 3000;
-http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Bot is running");
-}).listen(PORT, () => console.log(`✅ HTTP server listening on port ${PORT}`));
