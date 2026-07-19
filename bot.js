@@ -1540,4 +1540,22 @@ client.on("interactionCreate", async (licInteraction) => {
   }
 });
 
+// ====== HTTP SERVER (MUST start BEFORE login) ======
+const http = require("http");
+const PORT = process.env.PORT || 3000;
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Bot is running");
+});
+server.listen(PORT, () => console.log(`✅ HTTP server listening on port ${PORT}`));
+
+// ====== ERROR HANDLING ======
+process.on("unhandledRejection", (reason, promise) => {
+    console.error("[unhandledRejection]", reason);
+});
+process.on("uncaughtException", (error) => {
+    console.error("[uncaughtException]", error);
+});
+
+// ====== DISCORD LOGIN ======
 client.login(TOKEN);
